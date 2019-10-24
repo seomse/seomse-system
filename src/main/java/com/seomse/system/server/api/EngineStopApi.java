@@ -5,7 +5,7 @@ import com.seomse.commons.code.ExitCode;
 import com.seomse.commons.utils.ExceptionUtil;
 import com.seomse.jdbc.Database;
 import com.seomse.jdbc.naming.JdbcNaming;
-import com.seomse.system.server.Server;
+import com.seomse.system.server.ServerProcessor;
 import com.seomse.system.server.vo.ServerTimeUpdateVo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,8 +30,8 @@ public class EngineStopApi extends ApiMessage {
 	@Override
 	public void receive(String message) {
 		try{
-			Server server = Server.getInstance();
-			ServerTimeUpdateVo serverTimeUpdateVo = server.getTimeVo();
+			ServerProcessor serverProcessor = ServerProcessor.getInstance();
+			ServerTimeUpdateVo serverTimeUpdateVo = serverProcessor.getTimeVo();
 			long time = Database.getDateTime();
 			serverTimeUpdateVo.setEND_DATE(time);
 			JdbcNaming.update(serverTimeUpdateVo, false);

@@ -5,9 +5,8 @@ import com.seomse.commons.annotation.Priority;
 import com.seomse.commons.code.ExitCode;
 import com.seomse.commons.config.Config;
 import com.seomse.commons.config.ConfigSet;
-import com.seomse.commons.hardware.HardWare;
-import com.seomse.commons.hardware.NetworkInfo;
 import com.seomse.commons.utils.ExceptionUtil;
+import com.seomse.commons.utils.NetworkUtil;
 import com.seomse.commons.utils.sort.QuickSortArray;
 import com.seomse.jdbc.Database;
 import com.seomse.jdbc.JdbcQuery;
@@ -32,12 +31,12 @@ import java.util.Map;
  *  설    명 : Server
  *
  *  작 성 자 : macle
- *  작 성 일 : 2017.10
- *  버    전 : 1.2
- *  수정이력 :  2018.04, 2018.07
+ *  작 성 일 : 2019.10.24
+ *  버    전 : 1.0
+ *  수정이력 :
  *  기타사항 :
  * </pre>
- * @author Copyrights 2017, 2018 by ㈜섬세한사람들. All right reserved.
+ * @author Copyrights 2019 by ㈜섬세한사람들. All right reserved.
  */
 public class Server {
 
@@ -50,7 +49,7 @@ public class Server {
 	 * 싱글턴객체생성
 	 * 반드시 메인에서 실행해서 실행
 	 * 관련시나리오로 동기화 작성하지 않음
-	 * @param serverId
+	 * @param serverId serverId
 	 */
 	public static Server newInstance(String serverId){
 		if(instance != null){
@@ -67,7 +66,7 @@ public class Server {
 	 * 싱글인스턴스 얻기
 	 * 반드시 메인에서 실행해서 실행
 	 * 관련시나리오로 동기화 작성하지 않음
-	 * @return
+	 * @return Server Instance
 	 */
 	public static Server getInstance (){
 		return instance;
@@ -115,22 +114,22 @@ public class Server {
 
 		if(serverInfoVo == null){
 			
-			logger.error("server not reg server code: " +  serverId);
+			logger.error("server not reg server id " +  serverId);
 			System.exit(ExitCode.ERROR.getCodeNum());
 			return ;
 		}
 		
 		if(!updateNetworkInfo(serverInfoVo)){
-			logger.error("server network info not set server code: " +  serverId);
+			logger.error("server network info not set server id: " +  serverId);
 			System.exit(ExitCode.ERROR.getCodeNum());
 			return;
 		}
 		osType = OsType.valueOf(serverInfoVo.getOS_TYPE());
 		
 		try{
-			inetAddress = HardWare.getInetAddress(serverInfoVo.getHOST_ADDRESS());
+			inetAddress = NetworkUtil.getInetAddress(serverInfoVo.getHOST_ADDRESS());
 			if(inetAddress == null){
-				logger.error("server ip address error server code: " +  serverId);
+				logger.error("server host address error server code: " +  serverId);
 				System.exit(ExitCode.ERROR.getCodeNum());
 				return ;
 			}
@@ -233,31 +232,7 @@ public class Server {
 		logger.info("Server start complete!");
 	}
 	
-	
-	/**
-	 * 서버 네트워크 정보 업데이트
-	 */
-	private boolean updateNetworkInfo(ServerInfoVo serverInfoVo){
-		
-		if(serverInfoVo.getHOST_ADDRESS() != null){
-			return true;
-		}
-		
-		try{
-			
-			NetworkInfo networkInfo = HardWare.getNetworkInfo();
 
-			serverInfoVo.setHOST_ADDRESS(networkInfo.getIpAddress());
-			
-			JdbcNaming.update(serverInfoVo, false);
-			
-		}catch(Exception e){
-			logger.error(ExceptionUtil.getStackTrace(e));
-			return false;
-		}
-
-		return true;
-	}
 	
 	
 	
