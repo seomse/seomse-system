@@ -94,7 +94,7 @@ public class ServerConsole {
 	 * @param message
 	 * @return
 	 */
-	public static final String sendToReceiveMessage(String serverId, String packageName, String code, String message){
+	public static  String sendToReceiveMessage(String serverId, String packageName, String code, String message){
 		SocketAddress socketAddress = getApiConnectInfo(serverId);
 		ApiRequest request = new ApiRequest(socketAddress.getHostAddress(), socketAddress.getPort());
 		if(packageName != null){
@@ -106,25 +106,6 @@ public class ServerConsole {
 		
 		return result;
 	}
-	
-	/**
-	 * 서버 api접속정보 얻기
-	 * @param serverId
-	 * @return
-	 */
-	public static final SocketAddress getApiConnectInfo(String serverId){
-		ServerConnectVo serverConnectVo =  JdbcNaming.getObj(ServerConnectVo.class, "SERVER_ID='" + serverId+"'");
-		if(serverConnectVo.getCLIENT_CONNECT_TYPE().equals("O")){
-			//외부이면
-			return new SocketAddress(serverConnectVo.getOUT_HOST_ADDRESS(), serverConnectVo.getOUT_API_PORT());
-			
-		}else{
-			//내부이면
-			return new SocketAddress(serverConnectVo.getHOST_ADDRESS(), serverConnectVo.getAPI_PORT());
-			
-		}
-		
-	}
-	
+
 
 }

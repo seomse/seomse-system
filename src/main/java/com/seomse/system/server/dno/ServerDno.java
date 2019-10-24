@@ -1,6 +1,5 @@
 package com.seomse.system.server.dno;
 
-import com.seomse.jdbc.annotation.DateTime;
 import com.seomse.jdbc.annotation.PrimaryKey;
 import com.seomse.jdbc.annotation.Table;
 
@@ -8,15 +7,16 @@ import com.seomse.jdbc.annotation.Table;
  * <pre>
  *  파 일 명 : ServerDno.java
  *  설    명 : Server 데이터베이스 네이밍 객체
- *
+ *            초기 정보를 가져오는 객체이므로 워닝표시하지 않음
  *  작 성 자 : macle
- *  작 성 일 : 2019.10.24
+ *  작 성 일 : 2019.10.25
  *  버    전 : 1.0
  *  수정이력 :
  *  기타사항 :
  * </pre>
  * @author Copyrights 2019 by ㈜섬세한사람들. All right reserved.
  */
+@SuppressWarnings({"unused", "FieldCanBeLocal"})
 @Table(name="TB_SYSTEM_SERVER")
 public class ServerDno {
 
@@ -25,12 +25,7 @@ public class ServerDno {
     private String SERVER_NM;
     private String HOST_ADDR;
     private Integer API_PORT_NB;
-    private String OS_TP = "UNIX"  ;
-    @DateTime
-    private Long START_DT;
-    @DateTime
-    private Long END_DT;
-
+    private String OS_TP = "UNIX" ;
 
     public String getSERVER_ID() {
         return SERVER_ID;
@@ -40,51 +35,20 @@ public class ServerDno {
         this.SERVER_ID = SERVER_ID;
     }
 
-    public String getSERVER_NM() {
-        return SERVER_NM;
-    }
-
-    public void setSERVER_NM(String SERVER_NM) {
-        this.SERVER_NM = SERVER_NM;
-    }
-
     public String getHOST_ADDR() {
         return HOST_ADDR;
-    }
-
-    public void setHOST_ADDR(String HOST_ADDR) {
-        this.HOST_ADDR = HOST_ADDR;
     }
 
     public Integer getAPI_PORT_NB() {
         return API_PORT_NB;
     }
 
-    public void setAPI_PORT_NB(Integer API_PORT_NB) {
-        this.API_PORT_NB = API_PORT_NB;
-    }
-
     public String getOS_TP() {
         return OS_TP;
     }
 
-    public void setOS_TP(String OS_TP) {
-        this.OS_TP = OS_TP;
+    public String getSERVER_NM() {
+        return SERVER_NM;
     }
 
-    public Long getSTART_DT() {
-        return START_DT;
-    }
-
-    public void setSTART_DT(Long START_DT) {
-        this.START_DT = START_DT;
-    }
-
-    public Long getEND_DT() {
-        return END_DT;
-    }
-
-    public void setEND_DT(Long END_DT) {
-        this.END_DT = END_DT;
-    }
 }

@@ -11,7 +11,7 @@ package com.seomse.system.server.exception;
  *  수정이력 :
  *  기타사항 :
  * </pre>
- * @author Copyrights 2019 by ㈜섬세한사람들. All right reserved.
+ * @author Copyrights 2017 by ㈜섬세한사람들. All right reserved.
  */
 public class NotSupportOsTypeException extends RuntimeException{
 

@@ -1,29 +1,27 @@
 package com.seomse.system.server;
 
 import com.seomse.api.server.ApiServer;
-import com.seomse.commons.annotation.Priority;
 import com.seomse.commons.code.ExitCode;
 import com.seomse.commons.config.Config;
 import com.seomse.commons.config.ConfigSet;
 import com.seomse.commons.utils.ExceptionUtil;
 import com.seomse.commons.utils.NetworkUtil;
-import com.seomse.commons.utils.sort.QuickSortArray;
+import com.seomse.commons.utils.PriorityUtil;
 import com.seomse.jdbc.Database;
 import com.seomse.jdbc.JdbcQuery;
 import com.seomse.jdbc.naming.JdbcNaming;
+import com.seomse.system.server.dno.ServerDno;
+import com.seomse.system.server.dno.ServerTimeDno;
 import com.seomse.system.server.initializer.ServerInitializer;
-import com.seomse.system.server.vo.ServerConfigVo;
-import com.seomse.system.server.vo.ServerInfoVo;
-import com.seomse.system.server.vo.ServerTimeUpdateVo;
 import org.reflections.Reflections;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
 import java.net.InetAddress;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 /**
  * <pre>
@@ -31,7 +29,7 @@ import java.util.Map;
  *  설    명 : Server
  *
  *  작 성 자 : macle
- *  작 성 일 : 2019.10.24
+ *  작 성 일 : 2019.10.25
  *  버    전 : 1.0
  *  수정이력 :
  *  기타사항 :
@@ -77,64 +75,44 @@ public class Server {
 		WINDOWS //윈도우즈 계열
 		, UNIX //유닉스계열
 	}
-	
-	
-	private Map<String, String> serverConfigMap;
+
 	
 	private String serverId;
-	
-	
+
 	private OsType osType = null;
 
-	private ServerTimeUpdateVo timeVo = null;
+	private ServerTimeDno timeDno = null;
 	
 	
 	private InetAddress inetAddress;
 	
 	/**
 	 * 생성자
-	 * @param serverId
+	 * @param serverId serverId
 	 */
 	private Server(final String serverId){
 		this.serverId = serverId;
 
-		ServerInfoVo serverInfoVo = JdbcNaming.getObj(ServerInfoVo.class, "SERVER_ID='" + serverId + "' AND IS_DELETED='N'");
-		
-		serverConfigMap = new HashMap<>();
-		
-		List<ServerConfigVo> configList = JdbcNaming.getObjList(ServerConfigVo.class, "SERVER_ID='" + serverId +"'");
-		
-		if(configList.size() >0){
-			for(ServerConfigVo configVo : configList){
-				serverConfigMap.put(configVo.getCONFIG_KEY(), configVo.getCONFIG_VALUE());
-			}
+		ServerDno serverDno = JdbcNaming.getObj(ServerDno.class, "SERVER_ID='" + serverId + "' AND DEL_FG='N'");
 
-			configList.clear();
-		}
-
-		if(serverInfoVo == null){
+		if(serverDno == null){
 			
 			logger.error("server not reg server id " +  serverId);
 			System.exit(ExitCode.ERROR.getCodeNum());
 			return ;
 		}
-		
-		if(!updateNetworkInfo(serverInfoVo)){
-			logger.error("server network info not set server id: " +  serverId);
-			System.exit(ExitCode.ERROR.getCodeNum());
-			return;
-		}
-		osType = OsType.valueOf(serverInfoVo.getOS_TYPE());
+
+		osType = OsType.valueOf(serverDno.getOS_TP());
 		
 		try{
-			inetAddress = NetworkUtil.getInetAddress(serverInfoVo.getHOST_ADDRESS());
+			inetAddress = NetworkUtil.getInetAddress(serverDno.getHOST_ADDR());
 			if(inetAddress == null){
-				logger.error("server host address error server code: " +  serverId);
+				logger.error("server host address error server id: " +  serverId);
 				System.exit(ExitCode.ERROR.getCodeNum());
 				return ;
 			}
 
-			ApiServer apiServer = new ApiServer(serverInfoVo.getAPI_PORT(), "com.seomse.system.server.api");
+			ApiServer apiServer = new ApiServer(serverDno.getAPI_PORT_NB(), "com.seomse.system.server.api");
 			apiServer.setInetAddress(inetAddress);
 			apiServer.start();
 
@@ -144,21 +122,19 @@ public class Server {
 			System.exit(ExitCode.ERROR.getCodeNum());
 			return ;
 		}
-		
-		
+
 		new Thread(){
 			@Override
 			public void run(){
 				try{
 
-
-					String initializerPackage = Config.getConfig("server.initializer.package", "com.seomse.system");
-
+					String initializerPackage = Config.getConfig("server.initializer.package", "com.seomse");
 
 					Reflections ref = new Reflections(initializerPackage);
 					List<ServerInitializer> initializerList = new ArrayList<>();
 					for (Class<?> cl : ref.getSubTypesOf(ServerInitializer.class)) {
 						try{
+							//noinspection deprecation
 							ServerInitializer initializer = (ServerInitializer)cl.newInstance();
 							initializerList.add(initializer);
 						}catch(Exception e){logger.error(ExceptionUtil.getStackTrace(e));}
@@ -168,41 +144,14 @@ public class Server {
 						startComplete();
 						return;
 					}
-					
-					
-					
+
 					ServerInitializer[] initializerArray = initializerList.toArray(new ServerInitializer[0]);
-					
-					int [] numArray = new int[initializerArray.length];
-					
-					for(int i=0 ; i<numArray.length ; i++){
-						
-						int seq ;
-						try{
-							
-							Priority priority =initializerArray[i].getClass().getAnnotation(Priority.class);
-							if(priority != null){
-								seq = priority.seq();
-							}else{
-								seq = 1000;
-							}
-							
-							
-							
-						}catch(Exception e){
-							seq = 1000;
-							logger.error(ExceptionUtil.getStackTrace(e));
-						}
-						
-						
-						numArray[i] = seq;
-						
-					}
-					
-					
-					QuickSortArray<ServerInitializer> sort = new QuickSortArray<>(initializerArray);
-					sort.sortAsc(numArray);
-					for (int i=0; i<initializerArray.length; i++) {
+
+					Arrays.sort(initializerArray, PriorityUtil.PRIORITY_SORT);
+
+                    //순서 정보가 꼭맞아야하는 정보라 이전 for문 사용 확실한 인지를위해
+                    //noinspection ForLoopReplaceableByForEach
+                    for (int i=0; i<initializerArray.length; i++) {
 						try{
 							initializerArray[i].init();
 						}catch(Exception e){logger.error(ExceptionUtil.getStackTrace(e));}
@@ -223,50 +172,27 @@ public class Server {
 	private void startComplete(){
 		long dataTime = Database.getDateTime();
 		
-		timeVo = new ServerTimeUpdateVo();
-		timeVo.setSERVER_ID(serverId);
-		timeVo.setSTART_DATE(dataTime);
-		timeVo.setEND_DATE(null);
-		JdbcNaming.update(timeVo, true);
-		
+		timeDno = new ServerTimeDno();
+		timeDno.setSERVER_ID(serverId);
+		timeDno.setSTART_DT(dataTime);
+		timeDno.setEND_DT(null);
+		JdbcNaming.update(timeDno, true);
 		logger.info("Server start complete!");
 	}
-	
 
-	
-	
-	
-	
 	/**
-	 * 서버 설정 정보 얻기
-	 * @return
+	 * 서버 종료시간 업데이트
 	 */
-	public String getServerConfig(String key, String defaultValue){
-		
-		String value = serverConfigMap.get(key);
-		if(value == null){
-
-			value = Config.getConfig(key);
-
-			if(value == null)
-				return defaultValue;
-		}
-		
-		return value;
-		
+	public void updateEndTime(){
+		long dataTime = Database.getDateTime();
+		timeDno.setEND_DT(dataTime);
+		JdbcNaming.update(timeDno, false);
 	}
-	
-	/**
-	 * 서버 시작종료 정보Vo얻기
-	 * @return
-	 */
-	public ServerTimeUpdateVo getTimeVo(){
-		return timeVo;
-	}
-	
+
+
 	/**
 	 * 운영체제 유형얻기
-	 * @return
+	 * @return OsType
 	 */
 	public OsType getOsType(){
 		return osType;
@@ -274,32 +200,44 @@ public class Server {
 	
 	/**
 	 * 서버ID 얻기
-	 * @return
+	 * @return ServerId
 	 */
 	public String getServerId(){
 		return serverId;
 	}
 	
-	
-	
+
 	/**
 	 * InetAddress 얻기
-	 * @return
+	 * @return Server InetAddress
 	 */
 	public InetAddress getInetAddress() {
 		return inetAddress;
 	}
 
-
 	/**
-	 * DB서버의 설정 정보 바로 얻기
-	 * 메모리 동기화 오차방지용
-	 * 실시간 반영 중요한부분만 사용
-	 * 잦은사용시 속도저하 심각.
-	 * @param serverId
-	 * @param key
-	 * @return
+	 * 설정얻기
+	 * @param key 설정키
+	 * @return 설정값
 	 */
+	public String getConfig(String key){
+
+		//서버설정 검색
+		String value = JdbcQuery.getResultOne("SELECT CONFIG_VALUE FROM TB_SYSTEM_SERVER_CONFIG WHERE SERVER_ID='" + serverId +"' AND CONFIG_KEY='" + key + "' AND DEL_FG='N'");
+		if(value != null){
+			return value;
+		}
+
+		//공통설정검색
+		value = JdbcQuery.getResultOne("SELECT CONFIG_VALUE FROM TB_COMMON_CONFIG WHERE CONFIG_KEY='" + key + "' AND DEL_FG='N'");
+		if(value != null){
+			return value;
+		}
+
+		//파일설정 검색
+		return Config.getConfig(key);
+	}
+
 	public static String getServerDbConfig(String serverId, String key){
 		return JdbcQuery.getResultOne("SELECT CONFIG_VALUE FROM SERVER_CONFIG WHERE SERVER_ID='" + serverId +"'"
 				+ " AND CONFIG_KEY='" + key +"'");
@@ -311,22 +249,27 @@ public class Server {
 			return ;
 		}
 
-		if(args.length != 2){
+		if(args.length < 2){
 			logger.error("args is server code, config path");
 			return;
 		}
 
-
-		//noinspection ConstantConditions
+		//noinspection
 		if(args.length >= 3){
 			ConfigSet.LOG_BACK_PATH = args[2];
-		}
+		}else{
+			//개일때
+			File file =new File(args[1]);
 
+			String logbackPath = file.getPath()+"/logback.xml";
+			File logbackFile = new File(logbackPath);
+			if(logbackFile.isFile()) {
+				ConfigSet.LOG_BACK_PATH = logbackPath;
+			}
+		}
 		ConfigSet.CONFIG_PATH = args[1];
 
 		//서버 인스턴스 생성
 		newInstance(args[0]);
-
 	}
-	
 }
