@@ -1,7 +1,6 @@
 package com.seomse.system.server.console;
 
 import com.seomse.api.ApiRequest;
-import com.seomse.api.SocketAddress;
 import com.seomse.jdbc.objects.JdbcObjects;
 import com.seomse.system.server.api.ServerApiMessageType;
 
