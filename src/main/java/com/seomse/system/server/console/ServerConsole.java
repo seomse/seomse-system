@@ -2,8 +2,8 @@ package com.seomse.system.server.console;
 
 import com.seomse.api.ApiRequest;
 import com.seomse.api.SocketAddress;
-import com.seomse.jdbc.naming.JdbcNaming;
-import com.seomse.system.server.vo.ServerConnectVo;
+import com.seomse.jdbc.objects.JdbcObjects;
+import com.seomse.system.server.api.ServerApiMessageType;
 
 /**
  * <pre>
@@ -11,92 +11,75 @@ import com.seomse.system.server.vo.ServerConnectVo;
  *  설    명 : 서버콘솔 이벤트 관련 (서버가아닌 콘솔에서 클라이언트 이벤트용)
  *
  *  작 성 자 : macle
- *  작 성 일 : 2017.11
- *  버    전 : 1.2
- *  수정이력 :  2018.03, 2018.06
+ *  작 성 일 : 2019.10.25
+ *  버    전 : 1.0
+ *  수정이력 :
  *  기타사항 :
  * </pre>
- * @author Copyrights 2017, 2018 by ㈜섬세한사람들. All right reserved.
+ * @author Copyrights 2019 by ㈜섬세한사람들. All right reserved.
  */
 public class ServerConsole {
 	
 	/**
-	 * 서버 ping test
-	 * @param serverId
-	 * @return
+	 * ping
+	 * @param serverId 서버아이디
+	 * @return is ping success
 	 */
-	public static final String ping(String serverId){
+	public static boolean ping(String serverId){
 
-		SocketAddress socketAddress = getApiConnectInfo(serverId);
+		ServerConnect serverConnect = JdbcObjects.getObj(ServerConnect.class, "SERVER_ID='" + serverId +"' AND DEL_FG='N'");
 		//최대 5초대기
+		if(serverConnect == null){
+			return false;
+		}
 
-		ApiRequest request = new ApiRequest(socketAddress.getHostAddress(), socketAddress.getPort());
+		ApiRequest request = new ApiRequest(serverConnect.hostAddress, serverConnect.port);
 		request.setConnectTimeOut(5000);
 		request.setConnectErrorLog(true);
-
-		String result = request.sendToReceiveMessage("com.seomse.system.server.api", "PingTestApi");
+		String result = request.sendToReceiveMessage("ServerPingApi", null);
 		request.disConnect();
-  
-        return result;
-	}
 
-	/**
-	 * 서버 폴덧 생성
-	 * @param serverId
-	 * @param dirPath
-	 * @return
-	 */
-	public static final String mkdirs(String serverId, String dirPath){
-     	return sendToReceiveMessage(serverId, "MakeDirectoryApi" + dirPath);
-	}
-	
+		return result.startsWith(ServerApiMessageType.SUCCESS);
+
+   }
+
 	
 	/**
 	 * 서버종료
-	 * @param serverId
-	 * @return
+	 * @param serverId serverId
+	 * @return receive message
 	 */
-	public static final String serverStop(String serverId){
-		return sendToReceiveMessage(serverId, "EngineStopApi");
-	}
-	
-	
-	/**
-	 * 메시지 전송후 결과얻기
-	 * @param serverId
-	 * @param message
-	 * @return
-	 */
-	public static final String sendToReceiveMessage(String serverId, String message){
-		SocketAddress socketAddress = getApiConnectInfo(serverId);
-		ApiRequest request = new ApiRequest(socketAddress.getHostAddress(), socketAddress.getPort());
-		String result = request.sendToReceiveMessage("com.seomse.system.server.api", message);
-		request.disConnect();
-		return result;
+	public static String serverStop(String serverId){
+		return sendToReceiveMessage(serverId, "EngineStopApi", null);
 	}
 	
 	/**
 	 * 메시지 전송후 결과얻기
-	 * @param serverId
-	 * @param code
-	 * @param message
-	 * @return
+	 * @param serverId server id
+	 * @param code api code
+	 * @param message send message
+	 * @return receive message
 	 */
-	public static final String sendToReceiveMessage(String serverId, String code, String message){
+	public static String sendToReceiveMessage(String serverId, String code, String message){
 		return sendToReceiveMessage(serverId, null, code, message);
 	}
 	
 	/**
 	 * 메시지 전송후 결과얻기
-	 * @param serverId
-	 * @param packageName
-	 * @param code
-	 * @param message
-	 * @return
+	 * @param serverId server id
+	 * @param packageName code package name
+	 * @param code api code
+	 * @param message send message
+	 * @return receive message
 	 */
-	public static  String sendToReceiveMessage(String serverId, String packageName, String code, String message){
-		SocketAddress socketAddress = getApiConnectInfo(serverId);
-		ApiRequest request = new ApiRequest(socketAddress.getHostAddress(), socketAddress.getPort());
+	public static String sendToReceiveMessage(String serverId, String packageName, String code, String message){
+		ServerConnect serverConnect = JdbcObjects.getObj(ServerConnect.class, "SERVER_ID='" + serverId +"' AND DEL_FG='N'");
+
+		if(serverConnect == null){
+			return ServerApiMessageType.FAIL +" server null" ;
+		}
+
+		ApiRequest request = new ApiRequest(serverConnect.hostAddress, serverConnect.port);
 		if(packageName != null){
 			request.setPackageName(packageName);
 		}

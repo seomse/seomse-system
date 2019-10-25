@@ -30,7 +30,7 @@ case "${1}" in
 start)
 	 export pid=`ps -ef | grep ${JAVA_OPTION} | grep -v 'grep' | awk '{print $2}'`
    if [ -z ${pid} ]; then
-   	nohup ${JAVA_HOME}java -D${JAVA_OPTION} -Xms${5}m -Xmx${6}m -cp ${CLASSPATH}  com.seomse.system.engine.Engine ${2} ${3} ${4} > ${CONSOLE_LOG} &
+   	nohup ${JAVA_HOME}java -D${JAVA_OPTION} -Xms${4}m -Xmx${5}m -cp ${CLASSPATH}  com.seomse.system.engine.Engine ${2} ${3} ${6} > ${CONSOLE_LOG} &
 	  echo 'engine start' 
 	 else
   	echo 'Being already engine' 

@@ -17,8 +17,8 @@ public interface EngineRun {
 
 	/**
 	 * 엔진 시작
-	 * @param engineId 엔진ID
-	 * @return
+	 * @param engineId 엔진 ID
+	 * @return message
 	 */
 	String start(String engineId);
 	

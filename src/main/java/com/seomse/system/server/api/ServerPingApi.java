@@ -4,9 +4,8 @@ import com.seomse.api.ApiMessage;
 
 /**
  * <pre>
- *  파 일 명 : PingTestApi.java
- *  설    명 : 서버가 살아있는지 테스트한다.
- 서버 응답테스트
+ *  파 일 명 : ServerPing.java
+ *  설    명 : 서버응답체크
  *  작 성 자 : macle
  *  작 성 일 : 2017.10
  *  버    전 : 1.0
@@ -15,7 +14,7 @@ import com.seomse.api.ApiMessage;
  * </pre>
  * @author Copyrights 2017 ㈜섬세한사람들. All right reserved.
  */
-public class PingTestApi extends ApiMessage {
+public class ServerPingApi extends ApiMessage {
 
 	@Override
 	public void receive(String message) {

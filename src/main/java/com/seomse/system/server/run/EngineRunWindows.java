@@ -3,7 +3,6 @@ package com.seomse.system.server.run;
 import com.seomse.commons.utils.ExceptionUtil;
 import com.seomse.jdbc.JdbcQuery;
 import com.seomse.jdbc.naming.JdbcNaming;
-import com.seomse.system.config.ConfigProperty;
 import com.seomse.system.engine.Engine;
 import com.seomse.system.server.Server;
 import com.seomse.system.server.api.ServerApiMessageType;
@@ -41,7 +40,7 @@ public class EngineRunWindows implements EngineRun{
 			return "FAIL : ENGINES -> ENGINE_CODE Check: " + engineId;
 		}
 
-		String logbackXmlPath = JdbcQuery.getResultOne("SELECT CONFIG_VALUE FROM ENGINE_CONFIG WHERE ENGINE_ID='" + engineId +"' AND CONFIG_KEY='" + ConfigProperty.PROP_LOGBACK_XML_PATH + "' AND IS_DELETED='N'");
+		String logbackXmlPath = JdbcQuery.getResultOne("SELECT CONFIG_VALUE FROM ENGINE_CONFIG WHERE ENGINE_ID='" + engineId +"' AND CONFIG_KEY='logback.xml.path' AND DEL_FG='N'");
 
 		String pathValue;
 		if(logbackXmlPath == null){
@@ -70,7 +69,7 @@ public class EngineRunWindows implements EngineRun{
 			return ServerApiMessageType.SUCCESS;
 		}catch(Exception e){
 			logger.error(ExceptionUtil.getStackTrace(e));
-			return "FAIL : " + e.getMessage();
+			return  ServerApiMessageType.FAIL + "\n" + ExceptionUtil.getStackTrace(e);
 		}
 	}
 

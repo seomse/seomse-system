@@ -3,11 +3,9 @@ package com.seomse.system.server.run;
 import com.seomse.commons.utils.ExceptionUtil;
 import com.seomse.jdbc.JdbcQuery;
 import com.seomse.jdbc.naming.JdbcNaming;
-import com.seomse.system.config.ConfigProperty;
-import com.seomse.system.engine.Engine;
 import com.seomse.system.server.Server;
 import com.seomse.system.server.api.ServerApiMessageType;
-import com.seomse.system.server.vo.EngineRunVo;
+import com.seomse.system.server.dno.EngineRunDno;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -38,24 +36,28 @@ public class EngineRunUnix implements EngineRun{
 	public String start(String engineId) {
 		
 		Server server = Server.getInstance();
-		final EngineRunVo engineRunVo = JdbcNaming.getObj(EngineRunVo.class , "ENGINE_ID ='" + engineId +"' AND IS_DELETED='N' AND SERVER_ID='"
+		final EngineRunDno engineRunDno = JdbcNaming.getObj(EngineRunDno.class , "ENGINE_ID ='" + engineId +"' AND DEL_FG='N' AND SERVER_ID='"
 		+ server.getServerId() + "'" );
-		if(engineRunVo == null){
-			return "FAIL : ENGINE -> ENGINE_ID Check: " + engineId;
+		if(engineRunDno == null){
+			return ServerApiMessageType.FAIL + " ENGINE_ID Check: " + engineId;
 		}
 
-		String logbackXmlPath = JdbcQuery.getResultOne("SELECT CONFIG_VALUE FROM ENGINE_CONFIG WHERE ENGINE_ID='" + engineId +"' AND CONFIG_KEY='" + ConfigProperty.PROP_LOGBACK_XML_PATH + "' AND IS_DELETED='N'");
 
-		String pathValue = engineRunVo.getCONFIG_FILE_PATH() + Engine.PATH_SPLIT + logbackXmlPath;
 
 		List<String> commandList =  new ArrayList<>();
 		commandList.add("sh");
-		commandList.add(engineRunVo.getEXE_FILE_PATH() );
+		commandList.add(engineRunDno.getEXE_FILE_PATH() );
 		commandList.add("start");
 		commandList.add(engineId);
-		commandList.add(pathValue);
-		commandList.add(Integer.toString(engineRunVo.getMEMORY_MB_MIN_VALUE()));
-		commandList.add(Integer.toString(engineRunVo.getMEMORY_MB_MAX_VALUE()));
+		commandList.add(engineRunDno.getCONFIG_FILE_PATH());
+		commandList.add(Integer.toString(engineRunDno.getMIN_MEMORY_MB()));
+		commandList.add(Integer.toString(engineRunDno.getMAX_MEMORY_MB()));
+
+		String logbackXmlPath = JdbcQuery.getResultOne("SELECT CONFIG_VALUE FROM ENGINE_CONFIG WHERE ENGINE_ID='" + engineId +"' AND CONFIG_KEY='" + ConfigProperty.PROP_LOGBACK_XML_PATH + "' AND DEL_FG='N'");
+		if(logbackXmlPath != null){
+			commandList.add(logbackXmlPath);
+		}
+
 		try{
 			final StringBuilder messageBuilder = new StringBuilder();
 			ProcessBuilder builder = new ProcessBuilder(commandList);
@@ -91,12 +93,12 @@ public class EngineRunUnix implements EngineRun{
 			if(message.contains("engine start")){
 				return ServerApiMessageType.SUCCESS;
 			}else{
-				return "FAIL : " + message;
+				return ServerApiMessageType.FAIL + " "+ message;
 			}
 			
 		}catch(Exception e){
 			logger.error(ExceptionUtil.getStackTrace(e));
-			return "FAIL : " + e.getMessage();
+			return ServerApiMessageType.FAIL + "\n" + ExceptionUtil.getStackTrace(e);
 		}
 	}
 

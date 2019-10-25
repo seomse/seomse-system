@@ -20,8 +20,8 @@ public class EngineRunFactory {
 	
 	/**
 	 * EngineRun 생성
-	 * @param osType
-	 * @return
+	 * @param osType osType
+	 * @return EngineRun
 	 */
 	public static EngineRun newEngineRun(OsType osType){
 		switch(osType){

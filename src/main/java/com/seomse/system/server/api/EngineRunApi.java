@@ -2,7 +2,7 @@ package com.seomse.system.server.api;
 
 import com.seomse.api.ApiMessage;
 import com.seomse.commons.utils.ExceptionUtil;
-import com.seomse.system.server.ServerProcessor;
+import com.seomse.system.server.Server;
 import com.seomse.system.server.run.EngineRun;
 import com.seomse.system.server.run.EngineRunFactory;
 import org.slf4j.Logger;
@@ -30,8 +30,8 @@ public class EngineRunApi extends ApiMessage {
 	public void receive(String message) {
 
 		try{
-			ServerProcessor serverProcessor = ServerProcessor.getInstance();
-			EngineRun engineRun = EngineRunFactory.newEngineRun(serverProcessor.getOsType());
+			Server server = Server.getInstance();
+			EngineRun engineRun = EngineRunFactory.newEngineRun(server.getOsType());
 			sendMessage(ServerApiMessageType.SUCCESS + engineRun.start(message));
 		}catch(Exception e){
 			logger.error(ExceptionUtil.getStackTrace(e));

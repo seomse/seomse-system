@@ -128,7 +128,11 @@ public class Server {
 			public void run(){
 				try{
 
-					String initializerPackage = Config.getConfig("server.initializer.package", "com.seomse");
+					String initializerPackage = getConfig("server.initializer.package");
+
+					if(initializerPackage == null){
+						initializerPackage = "com.seomse";
+					}
 
 					Reflections ref = new Reflections(initializerPackage);
 					List<ServerInitializer> initializerList = new ArrayList<>();
