@@ -11,7 +11,6 @@ import com.seomse.jdbc.JdbcQuery;
 import com.seomse.jdbc.naming.JdbcDataType;
 import com.seomse.jdbc.naming.JdbcNaming;
 import com.seomse.jdbc.naming.PrepareStatementData;
-import com.seomse.system.engine.vo.EngineConfigVo;
 import com.seomse.system.engine.vo.EngineInfoVo;
 import com.seomse.system.engine.vo.EngineStartEndTimeVo;
 import org.slf4j.Logger;

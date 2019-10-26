@@ -3,7 +3,6 @@ package com.seomse.system.engine;
 import com.seomse.api.ApiRequest;
 import com.seomse.api.SocketAddress;
 import com.seomse.commons.communication.StringPush;
-import com.seomse.system.server.api.ServerApiMessageType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,7 +16,7 @@ import java.net.UnknownHostException;
  *  설    명 : 엔진 통신
  *
  *  작 성 자 : macle
- *  작 성 일 : 2017.11
+ *  작 성 일 : 2019.10.27
  *  버    전 : 1.0
  *  수정이력 :
  *  기타사항 :

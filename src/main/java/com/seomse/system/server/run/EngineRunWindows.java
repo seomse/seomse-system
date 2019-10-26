@@ -3,8 +3,8 @@ package com.seomse.system.server.run;
 import com.seomse.commons.utils.ExceptionUtil;
 import com.seomse.jdbc.JdbcQuery;
 import com.seomse.jdbc.naming.JdbcNaming;
+import com.seomse.system.commons.SystemMessageType;
 import com.seomse.system.server.Server;
-import com.seomse.system.server.api.ServerApiMessageType;
 import com.seomse.system.server.dno.EngineRunDno;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,12 +18,12 @@ import java.util.List;
  *  파 일 명 : EngineRunWindows.java
  *  설    명 : windows계열용 엔진실행
  *  작 성 자 : macle
- *  작 성 일 : 2018.03
- *  버    전 : 1.1
- *  수정이력 :  2019.05
+ *  작 성 일 : 2019.10.25
+ *  버    전 : 1.0
+ *  수정이력 :
  *  기타사항 :
  * </pre>
- * @author Copyrights 2018 ~ 2019by ㈜섬세한사람들. All right reserved.
+ * @author Copyrights 2019by ㈜섬세한사람들. All right reserved.
  */
 public class EngineRunWindows implements EngineRun{
 
@@ -37,7 +37,7 @@ public class EngineRunWindows implements EngineRun{
 				+ server.getServerId() + "'" );
 
 		if(engineRunDno == null){
-			return ServerApiMessageType.FAIL + " ENGINE_ID Check: " + engineId;
+			return SystemMessageType.FAIL + " ENGINE_ID Check: " + engineId;
 		}
 
 
@@ -61,10 +61,10 @@ public class EngineRunWindows implements EngineRun{
 			builder.redirectOutput(Redirect.INHERIT);
 			builder.start();
 
-			return ServerApiMessageType.SUCCESS;
+			return SystemMessageType.SUCCESS;
 		}catch(Exception e){
 			logger.error(ExceptionUtil.getStackTrace(e));
-			return  ServerApiMessageType.FAIL + "\n" + ExceptionUtil.getStackTrace(e);
+			return  SystemMessageType.FAIL + "\n" + ExceptionUtil.getStackTrace(e);
 		}
 	}
 

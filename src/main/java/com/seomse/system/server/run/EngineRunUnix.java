@@ -3,8 +3,8 @@ package com.seomse.system.server.run;
 import com.seomse.commons.utils.ExceptionUtil;
 import com.seomse.jdbc.JdbcQuery;
 import com.seomse.jdbc.naming.JdbcNaming;
+import com.seomse.system.commons.SystemMessageType;
 import com.seomse.system.server.Server;
-import com.seomse.system.server.api.ServerApiMessageType;
 import com.seomse.system.server.dno.EngineRunDno;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,12 +19,12 @@ import java.util.List;
  *  파 일 명 : EngineRunUnix.java
  *  설    명 : unix계열용 엔진실행
  *  작 성 자 : macle
- *  작 성 일 : 2017.10
- *  버    전 : 1.1
- *  수정이력 :  2019.05
+ *  작 성 일 : 2019.10.25
+ *  버    전 : 1.0
+ *  수정이력 :
  *  기타사항 :
  * </pre>
- * @author Copyrights 2017, 2019 by ㈜섬세한사람들. All right reserved.
+ * @author Copyrights 2019 by ㈜섬세한사람들. All right reserved.
  */
 public class EngineRunUnix implements EngineRun{
 	
@@ -39,7 +39,7 @@ public class EngineRunUnix implements EngineRun{
 		final EngineRunDno engineRunDno = JdbcNaming.getObj(EngineRunDno.class , "ENGINE_ID ='" + engineId +"' AND DEL_FG='N' AND SERVER_ID='"
 		+ server.getServerId() + "'" );
 		if(engineRunDno == null){
-			return ServerApiMessageType.FAIL + " ENGINE_ID Check: " + engineId;
+			return SystemMessageType.FAIL + " ENGINE_ID Check: " + engineId;
 		}
 
 
@@ -91,14 +91,14 @@ public class EngineRunUnix implements EngineRun{
 
 			messageBuilder.setLength(0);
 			if(message.contains("engine start")){
-				return ServerApiMessageType.SUCCESS;
+				return SystemMessageType.SUCCESS;
 			}else{
-				return ServerApiMessageType.FAIL + " "+ message;
+				return SystemMessageType.FAIL + " "+ message;
 			}
 			
 		}catch(Exception e){
 			logger.error(ExceptionUtil.getStackTrace(e));
-			return ServerApiMessageType.FAIL + "\n" + ExceptionUtil.getStackTrace(e);
+			return SystemMessageType.FAIL + "\n" + ExceptionUtil.getStackTrace(e);
 		}
 	}
 

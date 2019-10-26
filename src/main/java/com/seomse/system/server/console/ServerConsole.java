@@ -1,8 +1,10 @@
 package com.seomse.system.server.console;
 
 import com.seomse.api.ApiRequest;
+import com.seomse.api.ApiRequests;
 import com.seomse.jdbc.objects.JdbcObjects;
-import com.seomse.system.server.api.ServerApiMessageType;
+import com.seomse.system.commons.PingApi;
+import com.seomse.system.commons.SystemMessageType;
 
 /**
  * <pre>
@@ -27,19 +29,11 @@ public class ServerConsole {
 	public static boolean ping(String serverId){
 
 		ServerConnect serverConnect = JdbcObjects.getObj(ServerConnect.class, "SERVER_ID='" + serverId +"' AND DEL_FG='N'");
-		//최대 5초대기
 		if(serverConnect == null){
 			return false;
 		}
 
-		ApiRequest request = new ApiRequest(serverConnect.hostAddress, serverConnect.port);
-		request.setConnectTimeOut(5000);
-		request.setConnectErrorLog(true);
-		String result = request.sendToReceiveMessage("ServerPingApi", null);
-		request.disConnect();
-
-		return result.startsWith(ServerApiMessageType.SUCCESS);
-
+		return PingApi.ping(serverConnect.hostAddress, serverConnect.port);
    }
 
 	
@@ -49,7 +43,7 @@ public class ServerConsole {
 	 * @return receive message
 	 */
 	public static String serverStop(String serverId){
-		return sendToReceiveMessage(serverId, "EngineStopApi", null);
+		return sendToReceiveMessage(serverId, "ServerStopApi", "");
 	}
 	
 	/**
@@ -75,18 +69,9 @@ public class ServerConsole {
 		ServerConnect serverConnect = JdbcObjects.getObj(ServerConnect.class, "SERVER_ID='" + serverId +"' AND DEL_FG='N'");
 
 		if(serverConnect == null){
-			return ServerApiMessageType.FAIL +" server null" ;
+			return SystemMessageType.FAIL +" server null" ;
 		}
-
-		ApiRequest request = new ApiRequest(serverConnect.hostAddress, serverConnect.port);
-		if(packageName != null){
-			request.setPackageName(packageName);
-		}
-		request.connect();
-		String result = request.sendToReceiveMessage(code, message);
-		request.disConnect();
-		
-		return result;
+		return ApiRequests.sendToReceiveMessage(serverConnect.hostAddress, serverConnect.port, packageName, code, message);
 	}
 
 

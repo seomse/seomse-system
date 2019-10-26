@@ -1,6 +1,6 @@
 /** 
  * <pre>
- *  설    명 : 엔진콘솔관련 패키지
+ *  설    명 : 시스템관련 공통부분
  *                    
  *  작 성 자 : macle
  *  작 성 일 : 2019.10.27
@@ -10,4 +10,4 @@
  * </pre>
  * @author Copyrights 2019 by ㈜섬세한사람들. All right reserved.
  */
-package com.seomse.system.engine.console;
+package com.seomse.system.commons;
