@@ -3,7 +3,7 @@ package com.seomse.system.server.ftp;
 import com.seomse.commons.code.ExitCode;
 import com.seomse.ftp.server.FtpServer;
 import com.seomse.system.server.Server;
-import com.seomse.system.server.initializer.ServerInitializer;
+import com.seomse.system.server.ServerInitializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -13,7 +13,6 @@ import com.seomse.jdbc.naming.JdbcNaming;
 import com.seomse.system.server.console.ServerConsole;
 import com.seomse.system.server.dno.ServerDno;
 import com.seomse.system.server.dno.ServerTimeDno;
-import com.seomse.system.server.initializer.ServerInitializer;
 import org.reflections.Reflections;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

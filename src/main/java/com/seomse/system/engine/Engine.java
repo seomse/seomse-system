@@ -6,6 +6,7 @@ import com.seomse.commons.config.Config;
 import com.seomse.commons.config.ConfigSet;
 import com.seomse.commons.utils.ExceptionUtil;
 import com.seomse.commons.utils.NetworkUtil;
+import com.seomse.commons.utils.PriorityUtil;
 import com.seomse.jdbc.Database;
 import com.seomse.jdbc.naming.JdbcNaming;
 import com.seomse.sync.SynchronizerManager;
@@ -14,11 +15,15 @@ import com.seomse.system.engine.console.EngineConsole;
 import com.seomse.system.engine.dno.EngineStartDno;
 import com.seomse.system.engine.dno.EngineTimeDno;
 import com.seomse.system.server.console.ServerConsole;
+import org.reflections.Reflections;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.net.InetAddress;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * <pre>
@@ -126,21 +131,65 @@ public class Engine {
 				}
 			}
 
-
 			ApiServer apiServer = new ApiServer(engineStartDno.getAPI_PORT_NB(), Config.getConfig("system.engine.api.package","com.seomse.system.engine.api"));
 			if(inetAddress != null)
 				apiServer.setInetAddress(inetAddress);
 			apiServer.start();
-			//스프링부트 실행
+
+			//스프링 부트는 시스템을 이용하는 다른프로젝트에서 EngineInitializer 를 이용하여 구동시키는 방향으로 진행
+			//이니셜라이저 실행
+			new Thread(){
+				@Override
+				public void run(){
+					try{
+
+						String initializerPackage = Config.getConfig("engine.initializer.package", "com.seomse");
 
 
-			//싱크서비스 실행
+						Reflections ref = new Reflections(initializerPackage);
+						List<EngineInitializer> initializerList = new ArrayList<>();
+						for (Class<?> cl : ref.getSubTypesOf(EngineInitializer.class)) {
+							try{
+								//noinspection deprecation
+								EngineInitializer initializer = (EngineInitializer)cl.newInstance();
+								initializerList.add(initializer);
+							}catch(Exception e){logger.error(ExceptionUtil.getStackTrace(e));}
+						}
+
+						if(initializerList.size() == 0){
+							startComplete();
+							return;
+						}
+
+						EngineInitializer[] initializerArray = initializerList.toArray(new EngineInitializer[0]);
+
+						Arrays.sort(initializerArray, PriorityUtil.PRIORITY_SORT);
+
+						//순서 정보가 꼭맞아야하는 정보라 fori 구문 사용 확실한 인지를위해
+						//noinspection ForLoopReplaceableByForEach
+						for (int i=0 ; i < initializerArray.length ; i++) {
+							try{
+								initializerArray[i].init();
+							}catch(Exception e){logger.error(ExceptionUtil.getStackTrace(e));}
+						}
+					}catch(Exception e){
+						logger.error(ExceptionUtil.getStackTrace(e));
+					}
+
+					startComplete();
+				}
+
+			}.start();
+
 		}catch(Exception e){
 			logger.error(ExceptionUtil.getStackTrace(e));
 			System.exit(ExitCode.ERROR.getCodeNum());
-			return ;
 		}
 		
+
+	}
+
+	private void startComplete(){
 		long dataTime = Database.getDateTime();
 		timeDno = new EngineTimeDno();
 		timeDno.setENGINE_ID(engineId);
