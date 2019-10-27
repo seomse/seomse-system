@@ -4,22 +4,21 @@ import com.seomse.api.server.ApiServer;
 import com.seomse.commons.code.ExitCode;
 import com.seomse.commons.config.Config;
 import com.seomse.commons.config.ConfigSet;
-import com.seomse.commons.hardware.HardWare;
 import com.seomse.commons.utils.ExceptionUtil;
+import com.seomse.commons.utils.NetworkUtil;
 import com.seomse.jdbc.Database;
-import com.seomse.jdbc.JdbcQuery;
-import com.seomse.jdbc.naming.JdbcDataType;
 import com.seomse.jdbc.naming.JdbcNaming;
-import com.seomse.jdbc.naming.PrepareStatementData;
-import com.seomse.system.engine.vo.EngineInfoVo;
-import com.seomse.system.engine.vo.EngineStartEndTimeVo;
+import com.seomse.sync.SynchronizerManager;
+import com.seomse.system.commons.CommonConfigData;
+import com.seomse.system.engine.console.EngineConsole;
+import com.seomse.system.engine.dno.EngineStartDno;
+import com.seomse.system.engine.dno.EngineTimeDno;
+import com.seomse.system.server.console.ServerConsole;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
 import java.net.InetAddress;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * <pre>
@@ -27,26 +26,24 @@ import java.util.Map;
  *  설    명 : Engine
  *
  *  작 성 자 : macle
- *  작 성 일 : 2017.10
- *  버    전 : 1.2
- *  수정이력 :  2018.04, 2018.06
+ *  작 성 일 : 2019.10.27
+ *  버    전 : 1.0
+ *  수정이력 :
  *  기타사항 :
  * </pre>
- * @author Copyrights 2017, 2018 by ㈜섬세한사람들. All right reserved.
+ * @author Copyrights 2019 by ㈜섬세한사람들. All right reserved.
  */
 public class Engine {
+
 	private static final Logger logger = LoggerFactory.getLogger(Engine.class);
 	
 	private static Engine instance = null;
-
-
-	public static final String PATH_SPLIT = ".CONFIG.LOG.SPLIT.";
 
 	/**
 	 * 싱글턴객체생성
 	 * 반드시 메인에서 실행해서 실행
 	 * 관련시나리오로 동기화 작성하지 않음
-	 * @param engineId 엔진ID
+	 * @param engineId engine id
 	 * @return 엔진 인스턴스
 	 */
 	public static Engine newInstance(final String engineId){
@@ -71,53 +68,73 @@ public class Engine {
 	
 	private String engineId;
 	
-	private EngineStartEndTimeVo startEndTimeVo;
+	private EngineTimeDno timeDno;
 	
 	private long configTime = 0L;
-	private Map<String,String> configMap = null;
-	
+
+	private EngineConfigData engineConfigData;
+
+	private CommonConfigData commonConfigData;
+
 	/**
 	 * 생성자
-	 * @param engineId 엔진ID
+	 * @param engineId engine id
 	 */
 	private Engine(String engineId){
 		this.engineId = engineId;
-		
-		EngineInfoVo engineInfoVo = JdbcNaming.getObj(EngineInfoVo.class, "ENGINE_ID='" + engineId + "' AND IS_DELETED='N'");
-		if(engineInfoVo == null){
-			
-			logger.error("engine not reg engine code: " + engineId);
-			System.exit(ExitCode.ERROR.getCodeNum());
-			return ;
-		}
-		
-		String ipAddress = JdbcQuery.getResultOne("SELECT HOST_ADDRESS FROM SERVER WHERE SERVER_ID='"
-				+engineInfoVo.getSERVER_ID() +"' AND IS_DELETED='N'");
-		if(ipAddress == null){
-			
-			logger.error("server ip is null server code: " +  engineInfoVo.getSERVER_ID());
-			System.exit(ExitCode.ERROR.getCodeNum());
-			return ;
-		}
-		
-		Config.getConfig("");
-		configMap = new HashMap<>();
 
-		memoryUpdate();
+		EngineStartDno engineStartDno= JdbcNaming.getObj(EngineStartDno.class,"ENGINE_ID='" + engineId +"'");
+		if(engineStartDno == null){
+			
+			logger.error("engine not reg engine id: " + engineId);
+			System.exit(ExitCode.ERROR.getCodeNum());
+			return ;
+		}
+		
+		String hostAddress = EngineConsole.getHostAddress(engineId);
+		if(hostAddress == null){
+			
+			logger.error("engine host address null engine id: " + engineId + ", server id: " + engineStartDno.getSERVER_ID());
+			System.exit(ExitCode.ERROR.getCodeNum());
+			return ;
+		}
+
+
+		//설정정보 세팅하기
+		//엔진설정 등록
+		engineConfigData = new EngineConfigData(engineId);
+		engineConfigData.sync();
+		Config.addConfigData(engineConfigData);
+		SynchronizerManager.getInstance().add(engineConfigData);
+
+		//공통설정등록
+		commonConfigData = new CommonConfigData();
+		commonConfigData.sync();
+		Config.addConfigData(commonConfigData);
+		SynchronizerManager.getInstance().add(commonConfigData);
 
 		try{
-			
-			InetAddress inetAddress = HardWare.getInetAddress(ipAddress);
-			if(inetAddress == null){
-				logger.error("InetAddress error ip address: " +  ipAddress);
-				System.exit(ExitCode.ERROR.getCodeNum());
-				return ;
+			//ip설정이 있는지 체크
+			String ipAddress = ServerConsole.getIpAddress(engineStartDno.getSERVER_ID());
+			InetAddress inetAddress;
+			if(ipAddress == null) {
+				inetAddress = NetworkUtil.getInetAddress(hostAddress);
+			}else{
+				inetAddress = NetworkUtil.getInetAddress(ipAddress);
+				if(inetAddress == null){
+					inetAddress = NetworkUtil.getInetAddress(hostAddress);
+				}
 			}
 
-			ApiServer apiServer = new ApiServer(engineInfoVo.getAPI_PORT(), "com.seomse.system.server.api");
-			apiServer.setInetAddress(inetAddress);
-			apiServer.start();
 
+			ApiServer apiServer = new ApiServer(engineStartDno.getAPI_PORT_NB(), Config.getConfig("system.engine.api.package","com.seomse.system.engine.api"));
+			if(inetAddress != null)
+				apiServer.setInetAddress(inetAddress);
+			apiServer.start();
+			//스프링부트 실행
+
+
+			//싱크서비스 실행
 		}catch(Exception e){
 			logger.error(ExceptionUtil.getStackTrace(e));
 			System.exit(ExitCode.ERROR.getCodeNum());
@@ -125,109 +142,47 @@ public class Engine {
 		}
 		
 		long dataTime = Database.getDateTime();
-		startEndTimeVo = new EngineStartEndTimeVo();
-		startEndTimeVo.setENGINE_ID(engineId);
-		startEndTimeVo.setSTART_DATE(dataTime);
-		startEndTimeVo.setEND_DATE( null);
-		JdbcNaming.update(startEndTimeVo, true);
+		timeDno = new EngineTimeDno();
+		timeDno.setENGINE_ID(engineId);
+		timeDno.setSTART_DT(dataTime);
+		timeDno.setEND_DT( null);
+		JdbcNaming.update(timeDno, true);
 
 		logger.info("Engine start complete!");
 	}
 
-	
-	public void memoryUpdate(){
-		List<EngineConfigVo> configList;
-		if (configTime == 0L) {
-			configList = JdbcNaming.getObjList(EngineConfigVo.class, "ENGINE_ID='" + engineId + "'");
-		} else {
-			Map<Integer, PrepareStatementData> prepareStatementDataMap = new HashMap<>();
-			PrepareStatementData prepareStatementData = new PrepareStatementData();
-			prepareStatementData.setData(configTime);
-			prepareStatementData.setType(JdbcDataType.DATE_TIME);
-			prepareStatementDataMap.put(1, prepareStatementData);
-			configList = JdbcNaming.getObjList(EngineConfigVo.class, "ENGINE_ID='" + engineId + "' AND LAST_UPDATE_DATE > ? ", prepareStatementDataMap);
-		}
-		
-		
-		if(configList.size() > 0){
-			logger.debug("ENGINE_CONFIG update: " + configList.size());
-			
-			Map<String, String> changeMap = new HashMap<>();
-			for(EngineConfigVo configVo :configList){
-				
-				if(configVo.getLAST_UPDATE_TIME() > configTime){
-					configTime = configVo.getLAST_UPDATE_TIME();
-				}
-				if(configVo.getIS_DELETED().equals("Y")){
-					if(!configMap.containsKey(configVo.getCONFIG_KEY())){
-						continue;
-					}
-					configMap.remove(configVo.getCONFIG_KEY());
-				}else{
-					
-					String lastValue = configMap.get(configVo.getCONFIG_KEY());
-					configMap.put(configVo.getCONFIG_KEY(), configVo.getCONFIG_VALUE());
-					
-					if(lastValue == null){
-						changeMap.put(configVo.getCONFIG_KEY(), configVo.getCONFIG_VALUE());
-					}else{
-						if(configVo.getCONFIG_VALUE() != null && lastValue.equals(configVo.getCONFIG_VALUE())){
-							continue;
-						}
-						changeMap.put(configVo.getCONFIG_KEY(), configVo.getCONFIG_VALUE());
-					}
-					
-					
-					
-				}
-				if(changeMap.size()>0){
-
-					for (Map.Entry<String, String> entry : changeMap.entrySet()) {
-						Config.setConfig(entry.getKey(), entry.getValue());
-					}
-
-					changeMap.clear();
-					
-				}
-			}
-			configList.clear();
-		}
-	
-	}
-	
 	/**
 	 * 종료시점에 호출
 	 */
 	public void updateEndTime(){
 		long time = Database.getDateTime();
-		startEndTimeVo.setEND_DATE(time);
-		JdbcNaming.update(startEndTimeVo, false);
+		timeDno.setEND_DT(time);
+		JdbcNaming.update(timeDno, false);
 	}
-	
-	
+
 	/**
-	 * 엔진ID 얻기
-	 * @return 엔진ID
+	 * @return engine id
 	 */
 	public String getId() {
 		return engineId;
 	}
-	
-	/**
-	 * 엔진설정맵얻기
-	 * @return 엔진 설정 맵
-	 */
-	public Map<String, String> getConfigMap() {
-		return configMap;
-	}
 
 	/**
 	 * 엔진 전용설정얻기
-	 * @param key 설정 Key
-	 * @return 설정값
+	 * @param key config Key
+	 * @return config value
 	 */
-	public String getConfig(String key){
-		return configMap.get(key);
+	public String getEngineConfig(String key){
+		return engineConfigData.getConfig(key);
+	}
+
+	/**
+	 * 공통설정에 등록된 정보 얻기
+	 * @param key config Key
+	 * @return config value
+	 */
+	public String getCommonConfig(String key){
+		return commonConfigData.getConfig(key);
 	}
 	
 	public static void main(String [] args){
@@ -240,27 +195,22 @@ public class Engine {
 			logger.error("args is engine code, config path");
 			return;
 		}
-		try{
-
-			int index = args[1].indexOf(Engine.PATH_SPLIT);
-
-			if(index == -1){
-				ConfigSet.CONFIG_PATH = args[1];
-			}else{
-
-				ConfigSet.LOG_BACK_PATH = args[1].substring(index+ + Engine.PATH_SPLIT.length());
-
-				ConfigSet.CONFIG_PATH = args[1].substring(0, index);
+		//noinspection
+		if(args.length >= 3){
+			ConfigSet.LOG_BACK_PATH = args[2];
+		}else{
+			//length 2
+			File file =new File(args[1]);
+			String logbackPath = file.getPath()+"/logback.xml";
+			File logbackFile = new File(logbackPath);
+			if(logbackFile.isFile()) {
+				ConfigSet.LOG_BACK_PATH = logbackPath;
 			}
-
-
-
-			//서버 인스턴스 생성
-			newInstance(args[0]);
-			
-		}catch(Exception e){
-			logger.error(ExceptionUtil.getStackTrace(e));
 		}
+		ConfigSet.CONFIG_PATH = args[1];
+
+		//서버 인스턴스 생성
+		newInstance(args[0]);
 	}
 	
 }

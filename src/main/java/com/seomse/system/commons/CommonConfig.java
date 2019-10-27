@@ -1,4 +1,4 @@
-package com.seomse.system.engine;
+package com.seomse.system.commons;
 
 import com.seomse.jdbc.annotation.Column;
 import com.seomse.jdbc.annotation.DateTime;
@@ -7,8 +7,8 @@ import com.seomse.jdbc.annotation.Table;
 
 /**
  * <pre>
- *  파 일 명 : EngineConfig.java
- *  설    명 : 엔진 설정
+ *  파 일 명 : CommonConfig.java
+ *  설    명 : 공통 설정
  *
  *  작 성 자 : macle
  *  작 성 일 : 2019.10.27
@@ -18,8 +18,8 @@ import com.seomse.jdbc.annotation.Table;
  * </pre>
  * @author Copyrights 2019 by ㈜섬세한사람들. All right reserved.
  */
-@Table(name="TB_SYSTEM_ENGINE_CONFIG", orderBy = "UPT_LAST_DT ASC")
-public class EngineConfig {
+@Table(name="TB_COMMON_CONFIG", orderBy = "UPT_LAST_DT ASC")
+public class CommonConfig {
     @Column(name = "CONFIG_KEY")
     String key;
     @Column(name = "CONFIG_VALUE")
@@ -30,5 +30,4 @@ public class EngineConfig {
     @DateTime
     @Column(name = "UPT_LAST_DT")
     long updateTime;
-
 }

@@ -1,6 +1,17 @@
 package com.seomse.system.commons;
 
+import com.seomse.commons.annotation.Priority;
 import com.seomse.commons.config.ConfigData;
+import com.seomse.commons.config.ConfigInfo;
+import com.seomse.jdbc.PrepareStatements;
+import com.seomse.jdbc.objects.JdbcObjects;
+import com.seomse.sync.Synchronizer;
+import com.seomse.system.engine.EngineConfig;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.List;
+import java.util.Properties;
 
 /**
  * <pre>
@@ -20,15 +31,20 @@ import com.seomse.commons.config.ConfigData;
  * </pre>
  * @author Copyrights 2019 by ㈜섬세한사람들. All right reserved.
  */
-public class CommonConfigData extends ConfigData {
+@Priority(seq = 10) //동기화 우선순위용
+public class CommonConfigData extends ConfigData implements Synchronizer {
+    private static final Logger logger = LoggerFactory.getLogger(CommonConfigData.class);
+
+    private Properties properties = new Properties();
+
     @Override
-    public String getConfig(String s) {
-        return null;
+    public String getConfig(String key) {
+        return properties.getProperty(key);
     }
 
     @Override
-    public boolean containsKey(String s) {
-        return false;
+    public boolean containsKey(String key) {
+        return properties.containsKey(key);
     }
 
     @Override
@@ -37,7 +53,44 @@ public class CommonConfigData extends ConfigData {
     }
 
     @Override
-    protected void put(String s, String s1) {
+    protected void put(String key, String value) {
+        properties.put(key, value);
+    }
 
+    @Override
+    protected Object remove(String key) {
+        return properties.remove(key);
+    }
+
+    private long updateTime = 0L;
+
+
+    @Override
+    public void sync() {
+        List<CommonConfig> commonConfigList;
+        if(updateTime == 0L){
+            commonConfigList = JdbcObjects.getObjList(CommonConfig.class);
+        }else{
+            commonConfigList = JdbcObjects.getObjList(CommonConfig.class, "UPT_LAST_DT > ?" , PrepareStatements.newTimeMap(updateTime));
+        }
+        if(commonConfigList.size() == 0){
+            return;
+        }
+
+        logger.debug("common config update size: " + commonConfigList.size());
+
+        ConfigInfo[] infos = new ConfigInfo[commonConfigList.size()];
+
+        //순서정보가 명확해야할때는 fori 구문 사용
+        for (int i = 0; i < infos.length ; i++) {
+            CommonConfig commonConfig = commonConfigList.get(i);
+            ConfigInfo configInfo = new ConfigInfo(commonConfig.key, commonConfig.value);
+            if(commonConfig.isDelete){
+                configInfo.setDelete();
+            }
+            infos[i] = configInfo;
+        }
+        setConfig(infos);
+        updateTime = commonConfigList.get(commonConfigList.size()-1).updateTime;
     }
 }

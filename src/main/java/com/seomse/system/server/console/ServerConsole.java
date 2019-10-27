@@ -2,6 +2,7 @@ package com.seomse.system.server.console;
 
 import com.seomse.api.ApiRequest;
 import com.seomse.api.ApiRequests;
+import com.seomse.jdbc.JdbcQuery;
 import com.seomse.jdbc.objects.JdbcObjects;
 import com.seomse.system.commons.PingApi;
 import com.seomse.system.commons.SystemMessageType;
@@ -74,5 +75,12 @@ public class ServerConsole {
 		return ApiRequests.sendToReceiveMessage(serverConnect.hostAddress, serverConnect.port, packageName, code, message);
 	}
 
-
+	/**
+	 * InetAddress 용 ip address 얻기
+	 * @param serverId server id
+	 * @return ip address
+	 */
+	public static String getIpAddress(String serverId){
+		return JdbcQuery.getResultOne("SELECT CONFIG_VALUE FROM TB_SYSTEM_SERVER_CONFIG WHERE SERVER_ID='" + serverId +"' AND CONFIG_KEY ='ip.address' AND DEL_FG='N' ");
+	}
 }

@@ -15,12 +15,23 @@
 	  @author Copyrights 2017 by ㈜ 섬세한사람들. All right reserved.
  	-->
 
-	<entry key="application.jdbc.type">maria</entry>
-	<entry key="application.jdbc.driver.class">org.mariadb.jdbc.Driver</entry>
-	<entry key="application.jdbc.url">jdbc:mariadb://localhost:3306/seomse</entry>
+	<!-- engine -->
+	<entry key="system.engine.api.package">com.seomse.system.engine.api</entry>
+
+	<!-- sync -->
+	<entry key="sync.package">com.seomse</entry>
+	<entry key="sync.service.flag">Y</entry>
+	<entry key="sync.service.wait.time">3600000</entry>
+
+
+
+	<!-- jdbc -->
+	<entry key="application.jdbc.type">oracle</entry>
+	<entry key="application.jdbc.driver.class">oracle.jdbc.driver.OracleDriver</entry>
+	<entry key="application.jdbc.url">jdbc:oracle:thin:@url</entry>
 	<entry key="application.jdbc.login.encrypt">N</entry>
-	<entry key="application.jdbc.user.id">trading</entry>
-	<entry key="application.jdbc.user.password">Ahdkfk1119</entry>
+	<entry key="application.jdbc.user.id">id</entry>
+	<entry key="application.jdbc.user.password">password</entry>
 	<entry key="application.jdbc.connection.pool.count">5</entry>
 
 	<!-- auto commit N 일경우 이벤트 단위로 commit 실행
@@ -48,7 +59,7 @@
    
     <!-- 헤더 위치 정보 front,back 검사 순서대로 입력 뒷 해더부터 검색할경우 back,front 순
     앞쪽만 사용할경우 front 만 입력-->	
-    <entry key="application.jdbc.naming.header.position">front,back</entry>
+    <entry key="application.jdbc.naming.header.position">back</entry>
    	
    	<!-- 네이밍에 해당하는 도메인해더 -->
    	<entry key="application.jdbc.naming.string">ID,VAL,YMD,TP,NM,CD,FG</entry>

@@ -10,6 +10,7 @@ import com.seomse.commons.utils.PriorityUtil;
 import com.seomse.jdbc.Database;
 import com.seomse.jdbc.JdbcQuery;
 import com.seomse.jdbc.naming.JdbcNaming;
+import com.seomse.system.server.console.ServerConsole;
 import com.seomse.system.server.dno.ServerDno;
 import com.seomse.system.server.dno.ServerTimeDno;
 import com.seomse.system.server.initializer.ServerInitializer;
@@ -105,15 +106,21 @@ public class Server {
 		osType = OsType.valueOf(serverDno.getOS_TP());
 		
 		try{
-			inetAddress = NetworkUtil.getInetAddress(serverDno.getHOST_ADDR());
-			if(inetAddress == null){
-				logger.error("server host address error server id: " +  serverId);
-				System.exit(ExitCode.ERROR.getCodeNum());
-				return ;
-			}
+			//서버 아이피주소 얻기
+			//host address 와 ip address 가 다른경우 (네트워크 카드 설정용)
 
+			String ipAddress = ServerConsole.getIpAddress(serverId);
+			if(ipAddress == null) {
+				inetAddress = NetworkUtil.getInetAddress(serverDno.getHOST_ADDR());
+			}else{
+				inetAddress = NetworkUtil.getInetAddress(ipAddress);
+				if(inetAddress == null){
+					inetAddress = NetworkUtil.getInetAddress(serverDno.getHOST_ADDR());
+				}
+			}
 			ApiServer apiServer = new ApiServer(serverDno.getAPI_PORT_NB(), "com.seomse.system.server.api");
-			apiServer.setInetAddress(inetAddress);
+			if(inetAddress != null)
+				apiServer.setInetAddress(inetAddress);
 			apiServer.start();
 
 			
@@ -155,7 +162,7 @@ public class Server {
 
                     //순서 정보가 꼭맞아야하는 정보라 이전 for문 사용 확실한 인지를위해
                     //noinspection ForLoopReplaceableByForEach
-                    for (int i=0; i<initializerArray.length; i++) {
+                    for (int i=0 ; i < initializerArray.length ; i++) {
 						try{
 							initializerArray[i].init();
 						}catch(Exception e){logger.error(ExceptionUtil.getStackTrace(e));}
@@ -262,7 +269,7 @@ public class Server {
 		if(args.length >= 3){
 			ConfigSet.LOG_BACK_PATH = args[2];
 		}else{
-			//개일때
+			//length 2
 			File file =new File(args[1]);
 
 			String logbackPath = file.getPath()+"/logback.xml";
