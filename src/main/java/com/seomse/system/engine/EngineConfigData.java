@@ -64,8 +64,17 @@ public class EngineConfigData extends ConfigData implements Synchronizer {
     }
 
     @Override
-    protected Object remove(String key) {
-        return properties.remove(key);
+    protected String remove(String key) {
+        Object obj = properties.remove(key);
+
+        if(obj == null){
+            return null;
+        }
+        if(obj.getClass() == String.class){
+            return (String) obj;
+        }
+
+        return obj.toString();
     }
 
     private long updateTime = 0L;
