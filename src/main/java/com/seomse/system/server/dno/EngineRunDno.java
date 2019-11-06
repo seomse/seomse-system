@@ -20,7 +20,6 @@ public class EngineRunDno {
     private Integer API_PORT_NB;
     private Integer MIN_MEMORY_MB;
     private Integer MAX_MEMORY_MB;
-    private String CONFIG_FILE_PATH;
     private String EXE_FILE_PATH;
 
     public Integer getAPI_PORT_NB() {
@@ -35,9 +34,6 @@ public class EngineRunDno {
         return MAX_MEMORY_MB;
     }
 
-    public String getCONFIG_FILE_PATH() {
-        return CONFIG_FILE_PATH;
-    }
 
     public String getEXE_FILE_PATH() {
         return EXE_FILE_PATH;

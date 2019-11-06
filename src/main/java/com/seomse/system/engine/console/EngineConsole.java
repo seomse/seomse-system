@@ -46,7 +46,7 @@ public final class EngineConsole {
 	 * @return receive message
 	 */
 	public static String engineStop(String engineId){
-		return sendToReceiveMessage(engineId,"com.seomse.system.engine.api", "ServerStopApi", "");
+		return sendToReceiveMessage(engineId,"com.seomse.system.engine.api", "EngineStopApi", "");
 	}
 
 

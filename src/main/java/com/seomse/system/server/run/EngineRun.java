@@ -15,6 +15,10 @@ package com.seomse.system.server.run;
  */
 public interface EngineRun {
 
+	String CONFIG_PATH_KEY = "config.xml.path";
+	String LOG_CONFIG_PATH_KEY = "logback.xml.path";
+
+
 	/**
 	 * 엔진 시작
 	 * @param engineId 엔진 ID

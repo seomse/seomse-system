@@ -39,10 +39,10 @@ public class PingApi extends ApiMessage {
 		//최대 5초대기
 		request.setConnectTimeOut(5000);
 		request.setPackageName("com.seomse.system.commons");
-		request.setConnectErrorLog(true);
+		request.setConnectErrorLog(false);
+		request.connect();
 		String result = request.sendToReceiveMessage("PingApi", "");
 		request.disConnect();
-
 		return result.startsWith(SystemMessageType.SUCCESS);
 	}
 	

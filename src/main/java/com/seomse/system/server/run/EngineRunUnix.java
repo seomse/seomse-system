@@ -49,7 +49,11 @@ public class EngineRunUnix implements EngineRun{
 		commandList.add(engineRunDno.getEXE_FILE_PATH() );
 		commandList.add("start");
 		commandList.add(engineId);
-		commandList.add(engineRunDno.getCONFIG_FILE_PATH());
+		String configPath = JdbcQuery.getResultOne("SELECT CONFIG_VALUE FROM TB_SYSTEM_ENGINE_CONFIG WHERE ENGINE_ID='" + engineId + "' AND CONFIG_KEY='" + EngineRun.CONFIG_PATH_KEY +"' AND DEL_FG='N'");
+		if(configPath == null){
+			configPath = "../config/seomse_config.xml";
+		}
+		commandList.add(configPath);
 		commandList.add(Integer.toString(engineRunDno.getMIN_MEMORY_MB()));
 		commandList.add(Integer.toString(engineRunDno.getMAX_MEMORY_MB()));
 
