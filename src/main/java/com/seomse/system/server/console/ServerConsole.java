@@ -34,8 +34,6 @@ public class ServerConsole {
 			return false;
 		}
 
-		System.out.println(serverConnect.hostAddress + ", " + serverConnect.port);
-
 		return PingApi.ping(serverConnect.hostAddress, serverConnect.port);
    }
 

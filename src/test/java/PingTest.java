@@ -14,8 +14,8 @@ import com.seomse.system.server.console.ServerConsole;
  */
 public class PingTest {
     public static void main(String[] args) {
-        System.out.println(EngineConsole.ping("E58"));
-//        System.out.println(ServerConsole.ping("S58"));
+        System.out.println(EngineConsole.ping("E80"));
+//        System.out.println(ServerConsole.ping("S80"));
 
     }
 }
