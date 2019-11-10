@@ -1,6 +1,8 @@
 package com.seomse.system.commons;
 
+import com.seomse.jdbc.Database;
 import com.seomse.jdbc.JdbcQuery;
+import com.seomse.jdbc.objects.JdbcObjects;
 
 /**
  * <pre>
@@ -23,6 +25,21 @@ public class CommonConfigs {
      */
     public static String getConfig(String key){
         return JdbcQuery.getResultOne("SELECT CONFIG_VALUE TB_COMMON_CONFIG WHERE CONFIG_KEY='" + key + "'");
+    }
+
+
+    /**
+     * 업데이트
+     * @param key 업데이트 키
+     * @param value 업데이트 값
+     */
+    public static void update(String key, String value){
+        CommonConfig commonConfig = new CommonConfig();
+        commonConfig.key = key;
+        commonConfig.value = value;
+        commonConfig.isDelete = false;
+        commonConfig.updateTime = Database.getDateTime();
+        JdbcObjects.insertOrUpdate(commonConfig, true);
     }
 
 }
