@@ -1,6 +1,7 @@
 package com.seomse.system.engine;
 
 import com.seomse.commons.annotation.Priority;
+import com.seomse.commons.config.Config;
 import com.seomse.sync.SyncService;
 
 /**
@@ -21,8 +22,8 @@ public class EngineSyncServiceInitializer implements EngineInitializer{
     @Override
     public void init() {
         SyncService syncService = new SyncService();
-        syncService.setDelayedStart(true);
-        Thread thread = new Thread(syncService);
-        thread.start();
+        //지연된 시작
+        syncService.setDelayStartTime(Config.getLong("sync.service.sleep.time", 3600000L));
+        syncService.start();
     }
 }
