@@ -21,7 +21,7 @@
 	<!-- sync -->
 	<entry key="sync.package">com.seomse</entry>
 	<entry key="sync.service.flag">Y</entry>
-	<entry key="sync.service.wait.time">3600000</entry>
+	<entry key="sync.service.sleep.time">3600000</entry>
 
 
 
