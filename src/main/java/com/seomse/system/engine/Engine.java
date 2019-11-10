@@ -138,6 +138,7 @@ public class Engine {
 
 			//스프링 부트는 시스템을 이용하는 다른프로젝트에서 EngineInitializer 를 이용하여 구동시키는 방향으로 진행
 			//이니셜라이저 실행
+			//noinspection AnonymousHasLambdaAlternative
 			new Thread(){
 				@Override
 				public void run(){
@@ -150,7 +151,6 @@ public class Engine {
 						List<EngineInitializer> initializerList = new ArrayList<>();
 						for (Class<?> cl : ref.getSubTypesOf(EngineInitializer.class)) {
 							try{
-								//noinspection deprecation
 								EngineInitializer initializer = (EngineInitializer)cl.newInstance();
 								initializerList.add(initializer);
 							}catch(Exception e){logger.error(ExceptionUtil.getStackTrace(e));}
@@ -244,7 +244,6 @@ public class Engine {
 			logger.error("args is engine code, config path");
 			return;
 		}
-		//noinspection
 		if(args.length >= 3){
 			ConfigSet.LOG_BACK_PATH = args[2];
 		}else{
