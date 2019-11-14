@@ -85,7 +85,7 @@ public class EngineConfigData extends ConfigData implements Synchronizer {
         if(updateTime == 0L){
             engineConfigList = JdbcObjects.getObjList(EngineConfig.class);
         }else{
-            engineConfigList = JdbcObjects.getObjList(EngineConfig.class, "ENGINE_ID='" +engineId +"' UPT_LAST_DT > ?" , PrepareStatements.newTimeMap(updateTime));
+            engineConfigList = JdbcObjects.getObjList(EngineConfig.class, "ENGINE_ID='" +engineId +"' AND UPT_LAST_DT > ?" , PrepareStatements.newTimeMap(updateTime));
         }
 
         if(engineConfigList.size() == 0){
