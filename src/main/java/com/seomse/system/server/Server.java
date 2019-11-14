@@ -129,6 +129,7 @@ public class Server {
 			return ;
 		}
 
+		//noinspection AnonymousHasLambdaAlternative
 		new Thread(){
 			@Override
 			public void run(){
@@ -144,7 +145,7 @@ public class Server {
 					List<ServerInitializer> initializerList = new ArrayList<>();
 					for (Class<?> cl : ref.getSubTypesOf(ServerInitializer.class)) {
 						try{
-							//noinspection deprecation
+
 							ServerInitializer initializer = (ServerInitializer)cl.newInstance();
 							initializerList.add(initializer);
 						}catch(Exception e){logger.error(ExceptionUtil.getStackTrace(e));}

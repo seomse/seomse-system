@@ -6,7 +6,6 @@ import com.seomse.commons.config.ConfigInfo;
 import com.seomse.jdbc.PrepareStatements;
 import com.seomse.jdbc.objects.JdbcObjects;
 import com.seomse.sync.Synchronizer;
-import com.seomse.system.engine.EngineConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

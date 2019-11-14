@@ -5,7 +5,6 @@ import com.seomse.commons.code.ExitCode;
 import com.seomse.commons.utils.ExceptionUtil;
 import com.seomse.system.commons.SystemMessageType;
 import com.seomse.system.engine.Engine;
-import com.seomse.system.server.Server;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
