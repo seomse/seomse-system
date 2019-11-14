@@ -138,8 +138,21 @@ public final class EngineConsole {
 		return ApiRequests.sendToReceiveMessage(hostAddrPort.getHostAddress(), hostAddrPort.getPort(), packageName, code, message);
 	}
 
+
+
+	/**
+	 * 서버 설정 얻기
+	 * @param engineId 서버 아이디
+	 * @param configKey 설정키
+	 * @return 설정값
+	 */
+	public static String getEngineConfig(String engineId, String configKey){
+		return JdbcQuery.getResultOne("SELECT CONFIG_VALUE FROM TB_SYSTEM_ENGINE_CONFIG WHERE ENGINE_ID='" + engineId +"' AND CONFIG_KEY ='" + configKey + "' AND DEL_FG='N' ");
+	}
+
+
 	public static void main(String[] args) {
-		System.out.println(getHostAddress("engine"));
+		System.out.println(getEngineConfig("E58","crawling.active.priority"));
 	}
 
 

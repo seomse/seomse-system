@@ -36,6 +36,7 @@ public class PingApi extends ApiMessage {
 	 */
 	public static boolean ping(String hostAddress, int port){
 		ApiRequest request = new ApiRequest(hostAddress, port);
+		request.setNotLog();
 		//최대 5초대기
 		request.setConnectTimeOut(5000);
 		request.setPackageName("com.seomse.system.commons");

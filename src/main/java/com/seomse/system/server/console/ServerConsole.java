@@ -1,6 +1,5 @@
 package com.seomse.system.server.console;
 
-import com.seomse.api.ApiRequest;
 import com.seomse.api.ApiRequests;
 import com.seomse.jdbc.JdbcQuery;
 import com.seomse.jdbc.objects.JdbcObjects;
@@ -81,6 +80,34 @@ public class ServerConsole {
 	 * @return ip address
 	 */
 	public static String getIpAddress(String serverId){
-		return JdbcQuery.getResultOne("SELECT CONFIG_VALUE FROM TB_SYSTEM_SERVER_CONFIG WHERE SERVER_ID='" + serverId +"' AND CONFIG_KEY ='ip.address' AND DEL_FG='N' ");
+		return getServerConfig(serverId, "ip.address");
 	}
+
+
+	/**
+	 * 서버 설정 얻기
+	 * @param serverId 서버 아이디
+	 * @param configKey 설정키
+	 * @return 설정값
+	 */
+	public static String getServerConfig(String serverId, String configKey){
+		return JdbcQuery.getResultOne("SELECT CONFIG_VALUE FROM TB_SYSTEM_SERVER_CONFIG WHERE SERVER_ID='" + serverId +"' AND CONFIG_KEY ='" + configKey + "' AND DEL_FG='N' ");
+	}
+
+	//외부 접속 host address 얻기
+
+	/**
+	 * 외부 접속용 host address 얻기
+	 * @param serverId 서버 아이디
+	 * @return 외부 접속용 host address
+	 */
+	public static String getHostAddressOut(String serverId){
+		String address = getServerConfig(serverId,"host.address.out");
+		if(address == null){
+			address = JdbcQuery.getResultOne("SELECT HOST_ADDR FROM TB_SYSTEM_SERVER WHERE SERVER_ID='" + serverId +"' AND DEL_FG ='N'");
+
+		}
+		return address;
+	}
+
 }
