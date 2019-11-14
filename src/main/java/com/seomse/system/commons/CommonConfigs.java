@@ -24,7 +24,7 @@ public class CommonConfigs {
      * @return 설정 값
      */
     public static String getConfig(String key){
-        return JdbcQuery.getResultOne("SELECT CONFIG_VALUE TB_COMMON_CONFIG WHERE CONFIG_KEY='" + key + "'");
+        return JdbcQuery.getResultOne("SELECT CONFIG_VALUE FROM TB_COMMON_CONFIG WHERE CONFIG_KEY='" + key + "'");
     }
 
 
