@@ -142,7 +142,7 @@ public final class EngineConsole {
 
 	/**
 	 * 엔진 설정 얻기
-	 * @param engineId 서버 아이디
+	 * @param engineId 엔진 아이디
 	 * @param configKey 설정키
 	 * @return 설정값
 	 */
