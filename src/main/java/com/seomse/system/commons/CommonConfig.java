@@ -1,9 +1,6 @@
 package com.seomse.system.commons;
 
-import com.seomse.jdbc.annotation.Column;
-import com.seomse.jdbc.annotation.DateTime;
-import com.seomse.jdbc.annotation.FlagBoolean;
-import com.seomse.jdbc.annotation.Table;
+import com.seomse.jdbc.annotation.*;
 
 /**
  * <pre>
@@ -20,6 +17,7 @@ import com.seomse.jdbc.annotation.Table;
  */
 @Table(name="TB_COMMON_CONFIG", orderBy = "UPT_LAST_DT ASC")
 public class CommonConfig {
+    @PrimaryKey
     @Column(name = "CONFIG_KEY")
     String key;
     @Column(name = "CONFIG_VALUE")
