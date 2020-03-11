@@ -17,7 +17,7 @@ import com.seomse.jdbc.annotation.Table;
  * @author Copyrights 2019 by ㈜섬세한사람들. All right reserved.
  */
 @SuppressWarnings({"unused", "FieldCanBeLocal"})
-@Table(name="TB_SYSTEM_SERVER")
+@Table(name="T_SYSTEM_SERVER")
 public class ServerDno {
 
     @PrimaryKey(seq = 1)

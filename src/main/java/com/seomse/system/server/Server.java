@@ -234,13 +234,13 @@ public class Server {
 	public String getConfig(String key){
 
 		//서버설정 검색
-		String value = JdbcQuery.getResultOne("SELECT CONFIG_VALUE FROM TB_SYSTEM_SERVER_CONFIG WHERE SERVER_ID='" + serverId +"' AND CONFIG_KEY='" + key + "' AND DEL_FG='N'");
+		String value = JdbcQuery.getResultOne("SELECT CONFIG_VALUE FROM T_SYSTEM_SERVER_CONFIG WHERE SERVER_ID='" + serverId +"' AND CONFIG_KEY='" + key + "' AND DEL_FG='N'");
 		if(value != null){
 			return value;
 		}
 
 		//공통설정검색
-		value = JdbcQuery.getResultOne("SELECT CONFIG_VALUE FROM TB_COMMON_CONFIG WHERE CONFIG_KEY='" + key + "' AND DEL_FG='N'");
+		value = JdbcQuery.getResultOne("SELECT CONFIG_VALUE FROM T_COMMON_CONFIG WHERE CONFIG_KEY='" + key + "' AND DEL_FG='N'");
 		if(value != null){
 			return value;
 		}
@@ -250,7 +250,7 @@ public class Server {
 	}
 
 	public static String getServerDbConfig(String serverId, String key){
-		return JdbcQuery.getResultOne("SELECT CONFIG_VALUE FROM SERVER_CONFIG WHERE SERVER_ID='" + serverId +"'"
+		return JdbcQuery.getResultOne("SELECT CONFIG_VALUE FROM T_SYSTEM_SERVER_CONFIG WHERE SERVER_ID='" + serverId +"'"
 				+ " AND CONFIG_KEY='" + key +"'");
 	}
 	

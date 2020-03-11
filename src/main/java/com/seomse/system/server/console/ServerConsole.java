@@ -91,7 +91,7 @@ public class ServerConsole {
 	 * @return 설정값
 	 */
 	public static String getServerConfig(String serverId, String configKey){
-		return JdbcQuery.getResultOne("SELECT CONFIG_VALUE FROM TB_SYSTEM_SERVER_CONFIG WHERE SERVER_ID='" + serverId +"' AND CONFIG_KEY ='" + configKey + "' AND DEL_FG='N' ");
+		return JdbcQuery.getResultOne("SELECT CONFIG_VALUE FROM T_SYSTEM_SERVER_CONFIG WHERE SERVER_ID='" + serverId +"' AND CONFIG_KEY ='" + configKey + "' AND DEL_FG='N' ");
 	}
 
 	//외부 접속 host address 얻기
@@ -104,7 +104,7 @@ public class ServerConsole {
 	public static String getHostAddressOut(String serverId){
 		String address = getServerConfig(serverId,"host.address.out");
 		if(address == null){
-			address = JdbcQuery.getResultOne("SELECT HOST_ADDR FROM TB_SYSTEM_SERVER WHERE SERVER_ID='" + serverId +"' AND DEL_FG ='N'");
+			address = JdbcQuery.getResultOne("SELECT HOST_ADDR FROM T_SYSTEM_SERVER WHERE SERVER_ID='" + serverId +"' AND DEL_FG ='N'");
 
 		}
 		return address;

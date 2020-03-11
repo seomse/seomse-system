@@ -70,7 +70,7 @@ public final class EngineConsole {
 	 * @return 서버아이디
 	 */
 	public static String getServerId(String engineId){
-		return JdbcQuery.getResultOne("SELECT SERVER_ID FROM TB_SYSTEM_ENGINE WHERE ENGINE_ID='" + engineId+ "' AND DEL_FG='N'");
+		return JdbcQuery.getResultOne("SELECT SERVER_ID FROM T_SYSTEM_ENGINE WHERE ENGINE_ID='" + engineId+ "' AND DEL_FG='N'");
 	}
 
 	/**
@@ -80,7 +80,7 @@ public final class EngineConsole {
 	 */
 	public static String getHostAddress(String engineId){
 
-		String sql ="SELECT S.HOST_ADDR AS HOST_ADDR FROM TB_SYSTEM_SERVER S, TB_SYSTEM_ENGINE E\n" +
+		String sql ="SELECT S.HOST_ADDR AS HOST_ADDR FROM T_SYSTEM_SERVER S, T_SYSTEM_ENGINE E\n" +
 				" WHERE S.SERVER_ID = E.SERVER_ID\n" +
 				" AND S.DEL_FG='N' AND E.DEL_FG='N'\n" +
 				" AND E.ENGINE_ID ='" + engineId + "'";
@@ -94,7 +94,7 @@ public final class EngineConsole {
 	 * @return 접속정보 host address, port
 	 */
 	public static HostAddrPort getHostAddrPort(String engineId){
-		String sql = "SELECT S.HOST_ADDR AS HOST_ADDR, E.API_PORT_NB AS PORT_NB FROM TB_SYSTEM_SERVER S, TB_SYSTEM_ENGINE E\n" +
+		String sql = "SELECT S.HOST_ADDR AS HOST_ADDR, E.API_PORT_NB AS PORT_NB FROM T_SYSTEM_SERVER S, T_SYSTEM_ENGINE E\n" +
 				" WHERE S.SERVER_ID = E.SERVER_ID\n" +
 				" AND S.DEL_FG='N' AND E.DEL_FG='N'\n" +
 				" AND E.ENGINE_ID ='" + engineId + "'";
@@ -147,7 +147,7 @@ public final class EngineConsole {
 	 * @return 설정값
 	 */
 	public static String getEngineConfig(String engineId, String configKey){
-		return JdbcQuery.getResultOne("SELECT CONFIG_VALUE FROM TB_SYSTEM_ENGINE_CONFIG WHERE ENGINE_ID='" + engineId +"' AND CONFIG_KEY ='" + configKey + "' AND DEL_FG='N' ");
+		return JdbcQuery.getResultOne("SELECT CONFIG_VALUE FROM T_SYSTEM_ENGINE_CONFIG WHERE ENGINE_ID='" + engineId +"' AND CONFIG_KEY ='" + configKey + "' AND DEL_FG='N' ");
 	}
 
 

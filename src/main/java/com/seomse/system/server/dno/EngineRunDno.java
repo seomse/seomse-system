@@ -15,7 +15,7 @@ import com.seomse.jdbc.annotation.Table;
  * </pre>
  * @author Copyrights 2019 by ㈜섬세한사람들. All right reserved.
  */
-@Table(name="TB_SYSTEM_ENGINE")
+@Table(name="T_SYSTEM_ENGINE")
 public class EngineRunDno {
     private Integer API_PORT_NB;
     private Integer MIN_MEMORY_MB;

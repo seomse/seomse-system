@@ -11,7 +11,7 @@ export APP_HOME=/opt/seomse/server
 #Config path SET
 export CONFIG_PATH=../config/seomse_config.xml
 
-#Server id TB_SYSTEM_SERVER
+#Server id T_SYSTEM_SERVER
 export SERVER_ID=SEOMSE_SERVER
 
 

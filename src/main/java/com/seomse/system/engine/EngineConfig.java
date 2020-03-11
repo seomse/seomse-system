@@ -18,7 +18,7 @@ import com.seomse.jdbc.annotation.Table;
  * </pre>
  * @author Copyrights 2019 by ㈜섬세한사람들. All right reserved.
  */
-@Table(name="TB_SYSTEM_ENGINE_CONFIG", orderBy = "UPT_LAST_DT ASC")
+@Table(name="T_SYSTEM_ENGINE_CONFIG", orderBy = "UPT_LAST_DT ASC")
 public class EngineConfig {
     @Column(name = "CONFIG_KEY")
     String key;

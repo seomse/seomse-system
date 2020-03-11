@@ -15,7 +15,7 @@ import com.seomse.jdbc.annotation.*;
  * </pre>
  * @author Copyrights 2019 by ㈜섬세한사람들. All right reserved.
  */
-@Table(name="TB_COMMON_CONFIG", orderBy = "UPT_LAST_DT ASC")
+@Table(name="T_COMMON_CONFIG", orderBy = "UPT_LAST_DT ASC")
 public class CommonConfig {
     @PrimaryKey
     @Column(name = "CONFIG_KEY")

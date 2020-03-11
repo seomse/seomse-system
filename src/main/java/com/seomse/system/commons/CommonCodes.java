@@ -21,11 +21,11 @@ public class CommonCodes {
 
     public static String [] getCodes(String codeCategoryId){
 
-        if(!JdbcQuery.isRowData("SELECT CODE_CATEGORY_ID FROM TB_COMMON_CODE_CATEGORY WHERE CODE_CATEGORY_ID='" + codeCategoryId +"' AND DEL_FG='N'")){
+        if(!JdbcQuery.isRowData("SELECT CODE_CATEGORY_ID FROM T_COMMON_CODE_CATEGORY WHERE CODE_CATEGORY_ID='" + codeCategoryId +"' AND DEL_FG='N'")){
           return StringArray.EMPTY_STRING_ARRAY;
         }
 
-        List<String> codeList = JdbcQuery.getStringList("SELECT CODE FROM TB_COMMON_CODE WHERE CODE_CATEGORY_ID='" + codeCategoryId +"' AND DEL_FG='N' ORDER BY ORD_SEQ");
+        List<String> codeList = JdbcQuery.getStringList("SELECT CODE FROM T_COMMON_CODE WHERE CODE_CATEGORY_ID='" + codeCategoryId +"' AND DEL_FG='N' ORDER BY ORD_SEQ");
         if( codeList.size() == 0){
             return StringArray.EMPTY_STRING_ARRAY;
         }

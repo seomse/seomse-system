@@ -16,7 +16,7 @@ import com.seomse.jdbc.annotation.Table;
  * </pre>
  * @author Copyrights 2019 by ㈜섬세한사람들. All right reserved.
  */
-@Table(name="TB_SYSTEM_SERVER")
+@Table(name="T_SYSTEM_SERVER")
 public class ServerConnect {
     @Column(name = "HOST_ADDR")
     String hostAddress;

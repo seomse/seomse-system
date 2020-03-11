@@ -49,7 +49,7 @@ public class EngineRunUnix implements EngineRun{
 		commandList.add(engineRunDno.getEXE_FILE_PATH() );
 		commandList.add("start");
 		commandList.add(engineId);
-		String configPath = JdbcQuery.getResultOne("SELECT CONFIG_VALUE FROM TB_SYSTEM_ENGINE_CONFIG WHERE ENGINE_ID='" + engineId + "' AND CONFIG_KEY='" + EngineRun.CONFIG_PATH_KEY +"' AND DEL_FG='N'");
+		String configPath = JdbcQuery.getResultOne("SELECT CONFIG_VALUE FROM T_SYSTEM_ENGINE_CONFIG WHERE ENGINE_ID='" + engineId + "' AND CONFIG_KEY='" + EngineRun.CONFIG_PATH_KEY +"' AND DEL_FG='N'");
 		if(configPath == null){
 			configPath = "../config/seomse_config.xml";
 		}
@@ -57,7 +57,7 @@ public class EngineRunUnix implements EngineRun{
 		commandList.add(Integer.toString(engineRunDno.getMIN_MEMORY_MB()));
 		commandList.add(Integer.toString(engineRunDno.getMAX_MEMORY_MB()));
 
-		String logbackXmlPath = JdbcQuery.getResultOne("SELECT CONFIG_VALUE FROM TB_SYSTEM_ENGINE_CONFIG WHERE ENGINE_ID='" + engineId + "' AND CONFIG_KEY='logback.xml.path' AND DEL_FG='N'");
+		String logbackXmlPath = JdbcQuery.getResultOne("SELECT CONFIG_VALUE FROM T_SYSTEM_ENGINE_CONFIG WHERE ENGINE_ID='" + engineId + "' AND CONFIG_KEY='logback.xml.path' AND DEL_FG='N'");
 		if(logbackXmlPath != null){
 			commandList.add(logbackXmlPath);
 		}
