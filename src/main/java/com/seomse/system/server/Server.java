@@ -272,7 +272,7 @@ public class Server {
 			//length 2
 			File file =new File(args[1]);
 
-			String logbackPath = file.getPath()+"/logback.xml";
+			String logbackPath = file.getParentFile().getPath()+"/logback.xml";
 			File logbackFile = new File(logbackPath);
 			if(logbackFile.isFile()) {
 				ConfigSet.LOG_BACK_PATH = logbackPath;
