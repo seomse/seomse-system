@@ -16,10 +16,6 @@ import com.seomse.system.engine.dno.EngineStartDno;
 import com.seomse.system.engine.dno.EngineTimeDno;
 import com.seomse.system.server.console.ServerConsole;
 import org.reflections.Reflections;
-import org.reflections.scanners.SubTypesScanner;
-import org.reflections.util.ClasspathHelper;
-import org.reflections.util.ConfigurationBuilder;
-import org.reflections.util.FilterBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -77,7 +73,7 @@ public class Engine {
 	
 	private final String engineId;
 	
-	private EngineTimeDno timeDno;
+	private final EngineTimeDno timeDno;
 	
 //	private long configTime = 0L;
 
@@ -91,6 +87,8 @@ public class Engine {
 	 */
 	private Engine(String engineId){
 		this.engineId = engineId;
+		timeDno = new EngineTimeDno();
+		timeDno.setENGINE_ID(engineId);
 
 		EngineStartDno engineStartDno= JdbcNaming.getObj(EngineStartDno.class,"ENGINE_ID='" + engineId +"'");
 		if(engineStartDno == null){
@@ -154,10 +152,7 @@ public class Engine {
 
 						List<EngineInitializer> initializerList = new ArrayList<>();
 						for(String initPackage : initPackages) {
-							Reflections ref = new Reflections(new ConfigurationBuilder()
-									.setScanners(new SubTypesScanner())
-									.setUrls(ClasspathHelper.forClassLoader())
-									.filterInputsBy(new FilterBuilder().include(FilterBuilder.prefix(initPackage))));
+							Reflections ref = new Reflections(initPackage);
 
 							for (Class<?> cl : ref.getSubTypesOf(EngineInitializer.class)) {
 								try{
@@ -204,8 +199,7 @@ public class Engine {
 
 	private void startComplete(){
 		long dataTime = Database.getDateTime();
-		timeDno = new EngineTimeDno();
-		timeDno.setENGINE_ID(engineId);
+
 		timeDno.setSTART_DT(dataTime);
 		timeDno.setEND_DT( null);
 		JdbcNaming.update(timeDno, true);

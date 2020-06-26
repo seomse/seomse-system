@@ -89,6 +89,7 @@ public class EngineConfigData extends ConfigData implements Synchronizer {
         }
 
         if(engineConfigList.size() == 0){
+            logger.debug("engine config update size: 0");
             return;
         }
 

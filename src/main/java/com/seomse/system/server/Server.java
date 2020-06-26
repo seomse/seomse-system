@@ -14,10 +14,6 @@ import com.seomse.system.server.console.ServerConsole;
 import com.seomse.system.server.dno.ServerDno;
 import com.seomse.system.server.dno.ServerTimeDno;
 import org.reflections.Reflections;
-import org.reflections.scanners.SubTypesScanner;
-import org.reflections.util.ClasspathHelper;
-import org.reflections.util.ConfigurationBuilder;
-import org.reflections.util.FilterBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -149,10 +145,7 @@ public class Server {
 					List<ServerInitializer> initializerList = new ArrayList<>();
 
 					for(String initPackage : initPackages) {
-						Reflections ref = new Reflections(new ConfigurationBuilder()
-								.setScanners(new SubTypesScanner())
-								.setUrls(ClasspathHelper.forClassLoader())
-								.filterInputsBy(new FilterBuilder().include(FilterBuilder.prefix(initPackage))));
+						Reflections ref = new Reflections(initPackage);
 
 						for (Class<?> cl : ref.getSubTypesOf(ServerInitializer.class)) {
 							try{

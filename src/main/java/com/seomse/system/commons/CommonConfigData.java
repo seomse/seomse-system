@@ -82,6 +82,7 @@ public class CommonConfigData extends ConfigData implements Synchronizer {
             commonConfigList = JdbcObjects.getObjList(CommonConfig.class, "UPT_LAST_DT > ?" , PrepareStatements.newTimeMap(updateTime));
         }
         if(commonConfigList.size() == 0){
+            logger.debug("common config update size: 0") ;
             return;
         }
 
