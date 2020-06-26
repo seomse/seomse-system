@@ -16,6 +16,10 @@ import com.seomse.system.engine.dno.EngineStartDno;
 import com.seomse.system.engine.dno.EngineTimeDno;
 import com.seomse.system.server.console.ServerConsole;
 import org.reflections.Reflections;
+import org.reflections.scanners.SubTypesScanner;
+import org.reflections.util.ClasspathHelper;
+import org.reflections.util.ConfigurationBuilder;
+import org.reflections.util.FilterBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -71,11 +75,11 @@ public class Engine {
 		return instance;
 	}
 	
-	private String engineId;
+	private final String engineId;
 	
 	private EngineTimeDno timeDno;
 	
-	private long configTime = 0L;
+//	private long configTime = 0L;
 
 	private EngineConfigData engineConfigData;
 
@@ -146,15 +150,24 @@ public class Engine {
 
 						String initializerPackage = Config.getConfig("engine.initializer.package", "com.seomse");
 
+						String [] initPackages = initializerPackage.split(",");
 
-						Reflections ref = new Reflections(initializerPackage);
 						List<EngineInitializer> initializerList = new ArrayList<>();
-						for (Class<?> cl : ref.getSubTypesOf(EngineInitializer.class)) {
-							try{
-								EngineInitializer initializer = (EngineInitializer)cl.newInstance();
-								initializerList.add(initializer);
-							}catch(Exception e){logger.error(ExceptionUtil.getStackTrace(e));}
+						for(String initPackage : initPackages) {
+							Reflections ref = new Reflections(new ConfigurationBuilder()
+									.setScanners(new SubTypesScanner())
+									.setUrls(ClasspathHelper.forClassLoader())
+									.filterInputsBy(new FilterBuilder().include(FilterBuilder.prefix(initPackage))));
+
+							for (Class<?> cl : ref.getSubTypesOf(EngineInitializer.class)) {
+								try{
+									EngineInitializer initializer = (EngineInitializer)cl.newInstance();
+									initializerList.add(initializer);
+								}catch(Exception e){logger.error(ExceptionUtil.getStackTrace(e));}
+							}
 						}
+
+
 
 						if(initializerList.size() == 0){
 							startComplete();
