@@ -1,6 +1,5 @@
 package com.seomse.system.commons;
 
-import com.seomse.commons.utils.string.StringArray;
 import com.seomse.jdbc.JdbcQuery;
 
 import java.util.List;
@@ -19,15 +18,17 @@ import java.util.List;
  */
 public class CommonCodes {
 
+    private static final String [] EMPTY_CODES = new String[0];
+
     public static String [] getCodes(String codeCategoryId){
 
         if(!JdbcQuery.isRowData("SELECT CODE_CATEGORY_ID FROM T_COMMON_CODE_CATEGORY WHERE CODE_CATEGORY_ID='" + codeCategoryId +"' AND DEL_FG='N'")){
-          return StringArray.EMPTY_STRING_ARRAY;
+          return EMPTY_CODES;
         }
 
         List<String> codeList = JdbcQuery.getStringList("SELECT CODE FROM T_COMMON_CODE WHERE CODE_CATEGORY_ID='" + codeCategoryId +"' AND DEL_FG='N' ORDER BY ORD_SEQ");
         if( codeList.size() == 0){
-            return StringArray.EMPTY_STRING_ARRAY;
+            return EMPTY_CODES;
         }
         String [] result = codeList.toArray(new String[0]);
         codeList.clear();

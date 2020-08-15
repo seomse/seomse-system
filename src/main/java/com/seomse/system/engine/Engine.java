@@ -1,7 +1,6 @@
 package com.seomse.system.engine;
 
 import com.seomse.api.server.ApiServer;
-import com.seomse.commons.code.ExitCode;
 import com.seomse.commons.config.Config;
 import com.seomse.commons.config.ConfigSet;
 import com.seomse.commons.utils.ExceptionUtil;
@@ -94,7 +93,7 @@ public class Engine {
 		if(engineStartDno == null){
 			
 			logger.error("engine not reg engine id: " + engineId);
-			System.exit(ExitCode.ERROR.getCodeNum());
+			System.exit(-1);
 			return ;
 		}
 		
@@ -102,7 +101,7 @@ public class Engine {
 		if(hostAddress == null){
 			
 			logger.error("engine host address null engine id: " + engineId + ", server id: " + engineStartDno.getSERVER_ID());
-			System.exit(ExitCode.ERROR.getCodeNum());
+			System.exit(-1);
 			return ;
 		}
 
@@ -191,7 +190,7 @@ public class Engine {
 
 		}catch(Exception e){
 			logger.error(ExceptionUtil.getStackTrace(e));
-			System.exit(ExitCode.ERROR.getCodeNum());
+			System.exit(-1);
 		}
 		
 

@@ -1,8 +1,8 @@
 package com.seomse.system.engine;
 
 import com.seomse.api.ApiRequest;
-import com.seomse.commons.communication.HostAddrPort;
-import com.seomse.commons.communication.StringPush;
+import com.seomse.api.communication.HostAddrPort;
+import com.seomse.api.communication.StringPush;
 import com.seomse.system.commons.SystemMessageType;
 import com.seomse.system.engine.console.EngineConsole;
 import org.slf4j.Logger;
@@ -28,8 +28,8 @@ public class EngineCommunication {
 	
 	private static final Logger logger = LoggerFactory.getLogger(EngineCommunication.class);
 
-	private String engineId;
-	private HostAddrPort apiHostAddrPort;
+	private final String engineId;
+	private final HostAddrPort apiHostAddrPort;
 	private HostAddrPort pushHostAddrPort;
 
 	/**

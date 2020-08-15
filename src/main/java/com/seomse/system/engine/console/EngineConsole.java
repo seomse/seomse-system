@@ -1,7 +1,7 @@
 package com.seomse.system.engine.console;
 
 import com.seomse.api.ApiRequests;
-import com.seomse.commons.communication.HostAddrPort;
+import com.seomse.api.communication.HostAddrPort;
 import com.seomse.jdbc.JdbcQuery;
 import com.seomse.system.commons.PingApi;
 import com.seomse.system.commons.SystemMessageType;

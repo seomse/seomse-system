@@ -1,6 +1,5 @@
 package com.seomse.system.server.ftp;
 
-import com.seomse.commons.code.ExitCode;
 import com.seomse.ftp.server.FtpServer;
 import com.seomse.system.server.Server;
 import com.seomse.system.server.ServerInitializer;
@@ -48,7 +47,7 @@ public class FtpServerInitializer implements ServerInitializer {
 
             if(!ftpServer.newServerSocket()){
                 logger.error("ftp server start fail: " +  server.getServerId());
-                System.exit(ExitCode.ERROR.getCodeNum());
+                System.exit(-1);
                 return ;
             }
             ftpServer.start();

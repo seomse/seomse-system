@@ -1,7 +1,6 @@
 package com.seomse.system.server.api;
 
 import com.seomse.api.ApiMessage;
-import com.seomse.commons.code.ExitCode;
 import com.seomse.commons.utils.ExceptionUtil;
 import com.seomse.system.commons.SystemMessageType;
 import com.seomse.system.server.Server;
@@ -33,7 +32,7 @@ public class ServerStopApi extends ApiMessage {
 			server.updateEndTime();
 
 			sendMessage(SystemMessageType.SUCCESS);
-			System.exit(ExitCode.EXIT_ORDER.getCodeNum());
+			System.exit(-1);
 		}catch(Exception e){
 			logger.error(ExceptionUtil.getStackTrace(e));
 			sendMessage(SystemMessageType.FAIL + ExceptionUtil.getStackTrace(e));

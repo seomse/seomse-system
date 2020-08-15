@@ -1,7 +1,6 @@
 package com.seomse.system.server;
 
 import com.seomse.api.server.ApiServer;
-import com.seomse.commons.code.ExitCode;
 import com.seomse.commons.config.Config;
 import com.seomse.commons.config.ConfigSet;
 import com.seomse.commons.utils.ExceptionUtil;
@@ -77,7 +76,7 @@ public class Server {
 	}
 
 	
-	private String serverId;
+	private final String serverId;
 
 	private OsType osType = null;
 
@@ -98,7 +97,7 @@ public class Server {
 		if(serverDno == null){
 			
 			logger.error("server not reg server id " +  serverId);
-			System.exit(ExitCode.ERROR.getCodeNum());
+			System.exit(-1);
 			return ;
 		}
 
@@ -125,7 +124,7 @@ public class Server {
 			
 		}catch(Exception e){
 			logger.error(ExceptionUtil.getStackTrace(e));
-			System.exit(ExitCode.ERROR.getCodeNum());
+			System.exit(-1);
 			return ;
 		}
 
