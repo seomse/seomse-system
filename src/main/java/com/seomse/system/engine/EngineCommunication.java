@@ -1,3 +1,18 @@
+/*
+ * Copyright (C) 2020 Seomse Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.seomse.system.engine;
 
 import com.seomse.api.ApiRequest;
@@ -12,17 +27,8 @@ import java.io.IOException;
 import java.net.Socket;
 
 /**
- * <pre>
- *  파 일 명 : EngineCommunication.java
- *  설    명 : 엔진 통신
- *
- *  작 성 자 : macle
- *  작 성 일 : 2019.10.27
- *  버    전 : 1.0
- *  수정이력 :
- *  기타사항 :
- * </pre>
- * @author Copyrights 2019 by ㈜섬세한사람들. All right reserved.
+ * engine communication
+ * @author macle
  */
 public class EngineCommunication {
 	
@@ -34,7 +40,7 @@ public class EngineCommunication {
 
 	/**
 	 * 생성자
-	 * @param engineId engine id
+	 * @param engineId String engine id
 	 */
 	public EngineCommunication(String engineId){
 		this.engineId = engineId;
@@ -43,15 +49,16 @@ public class EngineCommunication {
 	
 	/**
 	 * 푸시용 host address port 설정
-	 * @param pushHostAddrPort push host address port info
+	 * @param pushHostAddrPort HostAddrPort push host address port info
 	 */
 	public void setPushIpPort(HostAddrPort pushHostAddrPort){
 		this.pushHostAddrPort = pushHostAddrPort;
 	}
-	
+
 	/**
-	 * 메시지 전송
-	 * @param message message
+	 *  메시지 전송
+	 * @param message String message
+	 * @throws IOException IOException
 	 */
 	public void push(String message) throws IOException{
 		Socket socket = new Socket(pushHostAddrPort.getHostAddress(), pushHostAddrPort.getPort());
@@ -62,8 +69,8 @@ public class EngineCommunication {
 	
 	/**
 	 * 메시지 전송, 메시지 받기
-	 * @param message message
-	 * @return receive message
+	 * @param message String request message
+	 * @return String response message
 	 */
 	public String sendToReceiveMessage(String packageName, String message){
 		ApiRequest request = new ApiRequest(apiHostAddrPort.getHostAddress(), apiHostAddrPort.getPort());
@@ -71,11 +78,12 @@ public class EngineCommunication {
 		request.disConnect();
 		return result;
 	}
-	
+
 	/**
 	 * 메시지를 배열단위로 끊어서 전송
-	 * @param messageArray message array
-	 * @return is message all success
+	 * @param packageName String package name
+	 * @param messageArray String [] message array
+	 * @return boolean is message all success
 	 */
 	public boolean sendMessage(String packageName, String [] messageArray){
 		ApiRequest request = new ApiRequest(apiHostAddrPort.getHostAddress(), apiHostAddrPort.getPort());
@@ -91,17 +99,16 @@ public class EngineCommunication {
 		request.disConnect();
 		return isResult;
 	}
-	
-	
+
 	/**
-	 * @return engine id
+	 * @return String engine id
 	 */
 	public String getEngineId() {
 		return engineId;
 	}
 	
 	/**
-	 * @return host address
+	 * @return String host address
 	 */
 	public String getHostAddress(){
 		return apiHostAddrPort.getHostAddress();

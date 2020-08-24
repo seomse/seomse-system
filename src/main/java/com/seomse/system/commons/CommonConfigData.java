@@ -1,3 +1,18 @@
+/*
+ * Copyright (C) 2020 Seomse Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.seomse.system.commons;
 
 import com.seomse.commons.annotation.Priority;
@@ -13,28 +28,14 @@ import java.util.List;
 import java.util.Properties;
 
 /**
- * <pre>
- *  파 일 명 : CommonConfigData.java
- *  설    명 : 공통설정 데이타
- *             아무런 설정을 하지 않을경우
- *             기본우선순위 10
- *             엔진설정 우선순위 0
- *             기본 파일 우선순위 1000
- *             시스템 프로퍼티 우선순위 Integer.Max
- *
- *  작 성 자 : macle
- *  작 성 일 : 2019.10.27
- *  버    전 : 1.0
- *  수정이력 :
- *  기타사항 :
- * </pre>
- * @author Copyrights 2019 by ㈜섬세한사람들. All right reserved.
+ * 공통 설정 database 와 memory 데이터 싱크용
+ * @author macle
  */
 @Priority(seq = 10) //동기화 우선순위용
 public class CommonConfigData extends ConfigData implements Synchronizer {
     private static final Logger logger = LoggerFactory.getLogger(CommonConfigData.class);
 
-    private Properties properties = new Properties();
+    private final Properties properties = new Properties();
 
     @Override
     public String getConfig(String key) {

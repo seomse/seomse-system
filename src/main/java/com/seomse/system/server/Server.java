@@ -13,6 +13,11 @@ import com.seomse.system.server.console.ServerConsole;
 import com.seomse.system.server.dno.ServerDno;
 import com.seomse.system.server.dno.ServerTimeDno;
 import org.reflections.Reflections;
+import org.reflections.scanners.ResourcesScanner;
+import org.reflections.scanners.SubTypesScanner;
+import org.reflections.util.ClasspathHelper;
+import org.reflections.util.ConfigurationBuilder;
+import org.reflections.util.FilterBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,30 +28,20 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * <pre>
- *  파 일 명 : Server.java
- *  설    명 : Server
- *
- *  작 성 자 : macle
- *  작 성 일 : 2019.10.25
- *  버    전 : 1.0
- *  수정이력 :
- *  기타사항 :
- * </pre>
- * @author Copyrights 2019 by ㈜섬세한사람들. All right reserved.
+ * server
+ * @author macle
  */
 public class Server {
 
 	private static final Logger logger = LoggerFactory.getLogger(Server.class);
 
 	private static Server instance = null;
-	
-	
+
+
 	/**
-	 * 싱글턴객체생성
-	 * 반드시 메인에서 실행해서 실행
-	 * 관련시나리오로 동기화 작성하지 않음
-	 * @param serverId serverId
+	 *  new singleton instance
+	 * @param serverId String server id
+	 * @return Server singleton instance
 	 */
 	public static Server newInstance(String serverId){
 		if(instance != null){
@@ -58,12 +53,10 @@ public class Server {
 		
 		return instance;
 	}
-	
+
 	/**
-	 * 싱글인스턴스 얻기
-	 * 반드시 메인에서 실행해서 실행
-	 * 관련시나리오로 동기화 작성하지 않음
-	 * @return Server Instance
+	 *
+	 * @return Server singleton instance
 	 */
 	public static Server getInstance (){
 		return instance;
@@ -87,7 +80,7 @@ public class Server {
 	
 	/**
 	 * 생성자
-	 * @param serverId serverId
+	 * @param serverId String server id
 	 */
 	private Server(final String serverId){
 		this.serverId = serverId;
@@ -144,7 +137,13 @@ public class Server {
 					List<ServerInitializer> initializerList = new ArrayList<>();
 
 					for(String initPackage : initPackages) {
-						Reflections ref = new Reflections(initPackage);
+						//0.9.10
+						Reflections ref = new Reflections(new ConfigurationBuilder()
+								.setScanners(new SubTypesScanner(false), new ResourcesScanner())
+								.setUrls(ClasspathHelper.forPackage(initPackage))
+								.filterInputsBy(new FilterBuilder().include(FilterBuilder.prefix(initPackage))));
+
+//						Reflections ref = new Reflections(initPackage);
 
 						for (Class<?> cl : ref.getSubTypesOf(ServerInitializer.class)) {
 							try{
@@ -183,8 +182,11 @@ public class Server {
 			
 		}.start();
 	}
-	
-	
+
+	/**
+	 * start complete
+	 * time update
+	 */
 	private void startComplete(){
 		long dataTime = Database.getDateTime();
 		
@@ -197,7 +199,7 @@ public class Server {
 	}
 
 	/**
-	 * 서버 종료시간 업데이트
+	 * end time update
 	 */
 	public void updateEndTime(){
 		long dataTime = Database.getDateTime();
@@ -216,7 +218,7 @@ public class Server {
 	
 	/**
 	 * 서버ID 얻기
-	 * @return ServerId
+	 * @return String ServerId
 	 */
 	public String getServerId(){
 		return serverId;
@@ -225,16 +227,17 @@ public class Server {
 
 	/**
 	 * InetAddress 얻기
-	 * @return Server InetAddress
+	 * @return InetAddress Server InetAddress
 	 */
 	public InetAddress getInetAddress() {
 		return inetAddress;
 	}
 
 	/**
-	 * 설정얻기
-	 * @param key 설정키
-	 * @return 설정값
+	 * config get
+	 * database server direct
+	 * @param key String config key
+	 * @return String config value
 	 */
 	public String getConfig(String key){
 
@@ -254,6 +257,13 @@ public class Server {
 		return Config.getConfig(key);
 	}
 
+	/**
+	 * config get
+	 * database server direct
+	 * @param serverId String server id
+	 * @param key String config key
+	 * @return String config value
+	 */
 	public static String getServerDbConfig(String serverId, String key){
 		return JdbcQuery.getResultOne("SELECT CONFIG_VALUE FROM T_SYSTEM_SERVER_CONFIG WHERE SERVER_ID='" + serverId +"'"
 				+ " AND CONFIG_KEY='" + key +"'");

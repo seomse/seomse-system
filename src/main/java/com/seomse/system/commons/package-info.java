@@ -1,13 +1,5 @@
-/** 
- * <pre>
- *  설    명 : 시스템관련 공통부분
- *                    
- *  작 성 자 : macle
- *  작 성 일 : 2019.10.27
- *  버    전 : 1.0
- *  수정이력 :
- *  기타사항 :
- * </pre>
- * @author Copyrights 2019 by ㈜섬세한사람들. All right reserved.
+/**
+ * 이패키지는 system 공통 부분에 대한 기능을 지원 합니다.
+ * @author macle
  */
 package com.seomse.system.commons;

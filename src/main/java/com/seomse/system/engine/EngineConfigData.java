@@ -1,3 +1,18 @@
+/*
+ * Copyright (C) 2020 Seomse Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.seomse.system.engine;
 
 import com.seomse.commons.annotation.Priority;
@@ -13,17 +28,10 @@ import java.util.List;
 import java.util.Properties;
 
 /**
- * <pre>
- *  파 일 명 : EngineConfigData.java
- *  설    명 : 엔진 설정 데이타
+ * engine config 데이터 베이스 연동
+ * in memory update
  *
- *  작 성 자 : macle
- *  작 성 일 : 2019.10.27
- *  버    전 : 1.0
- *  수정이력 :
- *  기타사항 :
- * </pre>
- * @author Copyrights 2019 by ㈜섬세한사람들. All right reserved.
+ * @author macle
  */
 @Priority(seq = 0) //동기화 우선순위용
 public class EngineConfigData extends ConfigData implements Synchronizer {
@@ -31,13 +39,13 @@ public class EngineConfigData extends ConfigData implements Synchronizer {
 
     private static final Logger logger = LoggerFactory.getLogger(EngineConfigData.class);
 
-    private Properties properties = new Properties();
+    private final Properties properties = new Properties();
 
-    private String engineId;
+    private final String engineId;
 
     /**
      * 생성자
-     * @param engineId engine id
+     * @param engineId String engine id
      */
     EngineConfigData(String engineId){
         this.engineId = engineId;

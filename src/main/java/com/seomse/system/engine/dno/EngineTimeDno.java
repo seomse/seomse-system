@@ -1,3 +1,18 @@
+/*
+ * Copyright (C) 2020 Seomse Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.seomse.system.engine.dno;
 
 import com.seomse.jdbc.annotation.DateTime;
@@ -5,17 +20,8 @@ import com.seomse.jdbc.annotation.PrimaryKey;
 import com.seomse.jdbc.annotation.Table;
 
 /**
- * <pre>
- *  파 일 명 : EngineTimeDno.java
- *  설    명 : 엔진 시작시간 끝시간 업데이트용 객체
- *
- *  작 성 자 : macle
- *  작 성 일 : 2019.10.27
- *  버    전 : 1.0
- *  수정이력 :
- *  기타사항 :
- * </pre>
- * @author Copyrights 2019 by ㈜섬세한사람들. All right reserved.
+ * engine start time, end time
+ * @author macle
  */
 @Table(name="T_SYSTEM_ENGINE")
 public class EngineTimeDno {
@@ -27,26 +33,50 @@ public class EngineTimeDno {
     @DateTime
     private Long END_DT;
 
+    /**
+     * engine id get
+     * @return String engine id
+     */
     public String getENGINE_ID() {
         return ENGINE_ID;
     }
 
+    /**
+     * engine id set
+     * @param ENGINE_ID String engine id
+     */
     public void setENGINE_ID(String ENGINE_ID) {
         this.ENGINE_ID = ENGINE_ID;
     }
 
+    /**
+     * start time get
+     * @return Long start time
+     */
     public Long getSTART_DT() {
         return START_DT;
     }
 
+    /**
+     * start time set
+     * @param START_DT Long start time
+     */
     public void setSTART_DT(Long START_DT) {
         this.START_DT = START_DT;
     }
 
+    /**
+     * end time get
+     * @return Long end time
+     */
     public Long getEND_DT() {
         return END_DT;
     }
 
+    /**
+     * end time set
+     * @param END_DT Long end time
+     */
     public void setEND_DT(Long END_DT) {
         this.END_DT = END_DT;
     }

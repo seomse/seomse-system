@@ -1,3 +1,18 @@
+/*
+ * Copyright (C) 2020 Seomse Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.seomse.system.engine;
 
 import com.seomse.api.server.ApiServer;
@@ -15,6 +30,11 @@ import com.seomse.system.engine.dno.EngineStartDno;
 import com.seomse.system.engine.dno.EngineTimeDno;
 import com.seomse.system.server.console.ServerConsole;
 import org.reflections.Reflections;
+import org.reflections.scanners.ResourcesScanner;
+import org.reflections.scanners.SubTypesScanner;
+import org.reflections.util.ClasspathHelper;
+import org.reflections.util.ConfigurationBuilder;
+import org.reflections.util.FilterBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,17 +45,8 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * <pre>
- *  파 일 명 : Engine.java
- *  설    명 : Engine
- *
- *  작 성 자 : macle
- *  작 성 일 : 2019.10.27
- *  버    전 : 1.0
- *  수정이력 :
- *  기타사항 :
- * </pre>
- * @author Copyrights 2019 by ㈜섬세한사람들. All right reserved.
+ * engine
+ * @author macle
  */
 public class Engine {
 
@@ -44,11 +55,9 @@ public class Engine {
 	private static Engine instance = null;
 
 	/**
-	 * 싱글턴객체생성
-	 * 반드시 메인에서 실행해서 실행
-	 * 관련시나리오로 동기화 작성하지 않음
-	 * @param engineId engine id
-	 * @return 엔진 인스턴스
+	 * new singleton instance
+	 * @param engineId String engine id
+	 * @return Engine singleton instance
 	 */
 	public static Engine newInstance(final String engineId){
 		if(instance != null){
@@ -59,12 +68,10 @@ public class Engine {
 		instance = new Engine(engineId);
 		return instance;
 	}
-	
+
 	/**
-	 * 싱글인스턴스 얻기
-	 * 반드시 메인에서 실행해서 실행
-	 * 관련시나리오로 동기화 작성하지 않음
-	 * @return 엔진 인스턴스
+	 * singleton instance get
+	 * @return Engine singleton instance
 	 */
 	public static Engine getInstance (){
 		return instance;
@@ -73,8 +80,6 @@ public class Engine {
 	private final String engineId;
 	
 	private final EngineTimeDno timeDno;
-	
-//	private long configTime = 0L;
 
 	private EngineConfigData engineConfigData;
 
@@ -82,7 +87,7 @@ public class Engine {
 
 	/**
 	 * 생성자
-	 * @param engineId engine id
+	 * @param engineId String engine id
 	 */
 	private Engine(String engineId){
 		this.engineId = engineId;
@@ -151,7 +156,13 @@ public class Engine {
 
 						List<EngineInitializer> initializerList = new ArrayList<>();
 						for(String initPackage : initPackages) {
-							Reflections ref = new Reflections(initPackage);
+							//0.9.10
+							Reflections ref = new Reflections(new ConfigurationBuilder()
+									.setScanners(new SubTypesScanner(false), new ResourcesScanner())
+									.setUrls(ClasspathHelper.forPackage(initPackage))
+									.filterInputsBy(new FilterBuilder().include(FilterBuilder.prefix(initPackage))));
+
+//							Reflections ref = new Reflections(initPackage);
 
 							for (Class<?> cl : ref.getSubTypesOf(EngineInitializer.class)) {
 								try{
@@ -196,6 +207,10 @@ public class Engine {
 
 	}
 
+	/**
+	 * start complete
+	 * time update
+	 */
 	private void startComplete(){
 		long dataTime = Database.getDateTime();
 
@@ -207,7 +222,7 @@ public class Engine {
 	}
 
 	/**
-	 * 종료시점에 호출
+	 * end time update
 	 */
 	public void updateEndTime(){
 		long time = Database.getDateTime();
@@ -216,25 +231,27 @@ public class Engine {
 	}
 
 	/**
-	 * @return engine id
+	 * @return String engine id
 	 */
 	public String getId() {
 		return engineId;
 	}
 
 	/**
-	 * 엔진 전용설정얻기
-	 * @param key config Key
-	 * @return config value
+	 * engine config get
+	 * memory data
+	 * @param key String config key
+	 * @return String engine config value
 	 */
 	public String getEngineConfig(String key){
 		return engineConfigData.getConfig(key);
 	}
 
 	/**
-	 * 공통설정에 등록된 정보 얻기
-	 * @param key config Key
-	 * @return config value
+	 * common config get
+	 * memory data
+	 * @param key String config key
+	 * @return String common config value
 	 */
 	public String getCommonConfig(String key){
 		return commonConfigData.getConfig(key);

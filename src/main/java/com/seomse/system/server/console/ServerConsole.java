@@ -1,3 +1,18 @@
+/*
+ * Copyright (C) 2020 Seomse Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.seomse.system.server.console;
 
 import com.seomse.api.ApiRequests;
@@ -7,24 +22,15 @@ import com.seomse.system.commons.PingApi;
 import com.seomse.system.commons.SystemMessageType;
 
 /**
- * <pre>
- *  파 일 명 : ServerConsole.java
- *  설    명 : 서버콘솔 이벤트 관련 (서버가아닌 콘솔에서 클라이언트 이벤트용)
- *
- *  작 성 자 : macle
- *  작 성 일 : 2019.10.25
- *  버    전 : 1.0
- *  수정이력 :
- *  기타사항 :
- * </pre>
- * @author Copyrights 2019 by ㈜섬세한사람들. All right reserved.
+ * server console
+ * @author macle
  */
 public class ServerConsole {
-	
+
 	/**
 	 * ping
-	 * @param serverId 서버아이디
-	 * @return is ping success
+	 * @param serverId String server id
+	 * @return boolean is ping
 	 */
 	public static boolean ping(String serverId){
 
@@ -38,32 +44,32 @@ public class ServerConsole {
 
 	
 	/**
-	 * 서버종료
-	 * @param serverId serverId
-	 * @return receive message
+	 * server stop
+	 * @param serverId String serverId
+	 * @return String receive message
 	 */
 	public static String serverStop(String serverId){
 		return sendToReceiveMessage(serverId, "ServerStopApi", "");
 	}
 	
 	/**
-	 * 메시지 전송후 결과얻기
-	 * @param serverId server id
-	 * @param code api code
-	 * @param message send message
-	 * @return receive message
+	 * 메시지 전송 후 결과 얻기
+	 * @param serverId String server id
+	 * @param code String api code
+	 * @param message String send message
+	 * @return String receive message
 	 */
 	public static String sendToReceiveMessage(String serverId, String code, String message){
 		return sendToReceiveMessage(serverId, null, code, message);
 	}
-	
+
 	/**
-	 * 메시지 전송후 결과얻기
-	 * @param serverId server id
-	 * @param packageName code package name
-	 * @param code api code
-	 * @param message send message
-	 * @return receive message
+	 * 메시지 전송 후 결과 얻기
+	 * @param serverId String server id
+	 * @param packageName String package name
+	 * @param code String code
+	 * @param message String send message
+	 * @return String receive message
 	 */
 	public static String sendToReceiveMessage(String serverId, String packageName, String code, String message){
 		ServerConnect serverConnect = JdbcObjects.getObj(ServerConnect.class, "SERVER_ID='" + serverId +"' AND DEL_FG='N'");
@@ -75,9 +81,10 @@ public class ServerConsole {
 	}
 
 	/**
-	 * InetAddress 용 ip address 얻기
-	 * @param serverId server id
-	 * @return ip address
+	 * inetaddress 에서 사용할 ip 얻기
+	 * 네트워크 카드선택용
+	 * @param serverId String server id
+	 * @return String ip address
 	 */
 	public static String getIpAddress(String serverId){
 		return getServerConfig(serverId, "ip.address");
@@ -86,20 +93,20 @@ public class ServerConsole {
 
 	/**
 	 * 서버 설정 얻기
-	 * @param serverId 서버 아이디
-	 * @param configKey 설정키
-	 * @return 설정값
+	 * @param serverId String server id
+	 * @param configKey String config key
+	 * @return String config value
 	 */
 	public static String getServerConfig(String serverId, String configKey){
 		return JdbcQuery.getResultOne("SELECT CONFIG_VALUE FROM T_SYSTEM_SERVER_CONFIG WHERE SERVER_ID='" + serverId +"' AND CONFIG_KEY ='" + configKey + "' AND DEL_FG='N' ");
 	}
 
-	//외부 접속 host address 얻기
-
 	/**
-	 * 외부 접속용 host address 얻기
-	 * @param serverId 서버 아이디
-	 * @return 외부 접속용 host address
+	 * host address get
+	 * 외부에서 접속할 수 있는 host address
+	 * 외부망에서도 접속이 필요한 경우
+	 * @param serverId String server id
+	 * @return String host address
 	 */
 	public static String getHostAddressOut(String serverId){
 		String address = getServerConfig(serverId,"host.address.out");

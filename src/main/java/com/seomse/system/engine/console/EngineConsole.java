@@ -1,3 +1,18 @@
+/*
+ * Copyright (C) 2020 Seomse Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.seomse.system.engine.console;
 
 import com.seomse.api.ApiRequests;
@@ -10,25 +25,15 @@ import com.seomse.system.server.console.ServerConsole;
 import java.util.Map;
 
 /**
- * <pre>
- *  파 일 명 : EngineConsole.java
- *  설    명 : 엔진콘솔 이벤트 관련 (서버가아닌 콘솔에서 클라이언트 이벤트용)
- *
- *  작 성 자 : macle
- *  작 성 일 : 2019.10.27
- *  버    전 : 1.0
- *  수정이력 :
- *  기타사항 :
- * </pre>
- * @author Copyrights 2019 by ㈜섬세한사람들. All right reserved.
+ * engine console
+ * @author macle
  */
 public final class EngineConsole {
-	
+
 	/**
-	 * 엔진시작
-	 * 서버에 엔진시작 명령을 전달
-	 * @param engineId engine id
-	 * @return 엔진시작 결과
+	 * engine start
+	 * @param engineId String engine id
+	 * @return String receive message
 	 */
 	public static String engineStart(String engineId){
 		
@@ -40,10 +45,9 @@ public final class EngineConsole {
 	}
 
 	/**
-	 * 엔진종료
-	 * 엔진은 설정에서 패키지를 변경하여 시작할 수 있으므로 엔진연관 api 패키지를 지정하여 명령 전송
-	 * @param engineId engine id
-	 * @return receive message
+	 * engine stop
+	 * @param engineId String engine id
+	 * @return String receive message
 	 */
 	public static String engineStop(String engineId){
 		return sendToReceiveMessage(engineId,"com.seomse.system.engine.api", "EngineStopApi", "");
@@ -52,8 +56,8 @@ public final class EngineConsole {
 
 	/**
 	 * ping
-	 * @param engineId engine id
-	 * @return is ping success
+	 * @param engineId String engine iod
+	 * @return boolean
 	 */
 	public static boolean ping(String engineId) {
 		HostAddrPort hostAddrPort = getHostAddrPort(engineId);
@@ -63,20 +67,19 @@ public final class EngineConsole {
 		return PingApi.ping(hostAddrPort.getHostAddress(), hostAddrPort.getPort());
 	}
 
-
 	/**
-	 * 서바 아이디 얻기
-	 * @param engineId engine id
-	 * @return 서버아이디
+	 * server id get
+	 * @param engineId String engine id
+	 * @return String server id
 	 */
 	public static String getServerId(String engineId){
 		return JdbcQuery.getResultOne("SELECT SERVER_ID FROM T_SYSTEM_ENGINE WHERE ENGINE_ID='" + engineId+ "' AND DEL_FG='N'");
 	}
 
 	/**
-	 * 엔진 host address 얻기
-	 * @param engineId engine id
-	 * @return host address
+	 * host address get
+	 * @param engineId String engine id
+	 * @return String host address
 	 */
 	public static String getHostAddress(String engineId){
 
@@ -89,9 +92,9 @@ public final class EngineConsole {
 	}
 
 	/**
-	 * 접속정보 얻기
-	 * @param engineId engine id
-	 * @return 접속정보 host address, port
+	 * HostAddrPort get
+	 * @param engineId String engine id
+	 * @return HostAddrPort host adder and port
 	 */
 	public static HostAddrPort getHostAddrPort(String engineId){
 		String sql = "SELECT S.HOST_ADDR AS HOST_ADDR, E.API_PORT_NB AS PORT_NB FROM T_SYSTEM_SERVER S, T_SYSTEM_ENGINE E\n" +
@@ -111,23 +114,25 @@ public final class EngineConsole {
 	}
 
 	/**
-	 * 메시지 전송후 결과얻기
-	 * @param engineId engine id
-	 * @param code api code
-	 * @param message send message
-	 * @return receive message
+	 * 메시지 전송후 결과 얻기
+	 * @param engineId String engine id
+	 * @param code String code
+	 * @param message String send message
+	 * @return String receive message
 	 */
 	public static String sendToReceiveMessage(String engineId, String code, String message){
 		return sendToReceiveMessage(engineId, null, code, message);
 	}
 
+
+
 	/**
-	 * 메시지 전송후 결과얻기
-	 * @param engineId engine id
-	 * @param packageName code package name
-	 * @param code api code
-	 * @param message send message
-	 * @return receive message
+	 *  메시지 전송후 결과 얻기
+	 * @param engineId String engine id
+	 * @param packageName String package name
+	 * @param code String code
+	 * @param message String send message
+	 * @return String receive message
 	 */
 	public static String sendToReceiveMessage(String engineId, String packageName, String code, String message){
 		HostAddrPort hostAddrPort = getHostAddrPort(engineId);
@@ -139,21 +144,15 @@ public final class EngineConsole {
 	}
 
 
-
 	/**
-	 * 엔진 설정 얻기
-	 * @param engineId 엔진 아이디
-	 * @param configKey 설정키
-	 * @return 설정값
+	 * engine config get
+	 * data base direct
+	 * @param engineId String engine id
+	 * @param configKey String config key
+	 * @return String config value
 	 */
 	public static String getEngineConfig(String engineId, String configKey){
 		return JdbcQuery.getResultOne("SELECT CONFIG_VALUE FROM T_SYSTEM_ENGINE_CONFIG WHERE ENGINE_ID='" + engineId +"' AND CONFIG_KEY ='" + configKey + "' AND DEL_FG='N' ");
 	}
-
-
-	public static void main(String[] args) {
-		System.out.println(getEngineConfig("E58","crawling.active.priority"));
-	}
-
 
 }
