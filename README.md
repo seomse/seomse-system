@@ -30,7 +30,10 @@ seomse-jdbc 활용
 - seomse-sync를 활용한 in memory 메타 관리기능 지원
 
 # gradle
-지원예정
+implementation 'com.seomse.system:seomse-system:0.9.0'
+
+# etc
+https://mvnrepository.com/artifact/com.seomse.system/seomse-system/0.9.0
 
 # communication
 ### blog, homepage
