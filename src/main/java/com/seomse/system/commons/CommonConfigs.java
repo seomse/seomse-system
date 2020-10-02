@@ -27,8 +27,8 @@ public class CommonConfigs {
 
     /**
      * 설정값 얻기
-     * @param key 설정 키
-     * @return 설정 값
+     * @param key String 설정 키
+     * @return String 설정 값
      */
     public static String getConfig(String key){
         return JdbcQuery.getResultOne("SELECT CONFIG_VALUE FROM T_COMMON_CONFIG WHERE CONFIG_KEY='" + key + "'");
@@ -37,8 +37,8 @@ public class CommonConfigs {
 
     /**
      * 업데이트
-     * @param key 업데이트 키
-     * @param value 업데이트 값
+     * @param key String 업데이트 키
+     * @param value String 업데이트 값
      */
     public static void update(String key, String value){
         CommonConfig commonConfig = new CommonConfig();

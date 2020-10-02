@@ -39,7 +39,7 @@ public class Server {
 
 
 	/**
-	 *  new singleton instance
+	 * new singleton instance
 	 * @param serverId String server id
 	 * @return Server singleton instance
 	 */
@@ -55,7 +55,6 @@ public class Server {
 	}
 
 	/**
-	 *
 	 * @return Server singleton instance
 	 */
 	public static Server getInstance (){

@@ -16,10 +16,10 @@
 package com.seomse.system.server.console;
 
 import com.seomse.api.ApiRequests;
+import com.seomse.api.Messages;
 import com.seomse.jdbc.JdbcQuery;
 import com.seomse.jdbc.objects.JdbcObjects;
 import com.seomse.system.commons.PingApi;
-import com.seomse.system.commons.SystemMessageType;
 
 /**
  * server console
@@ -75,7 +75,7 @@ public class ServerConsole {
 		ServerConnect serverConnect = JdbcObjects.getObj(ServerConnect.class, "SERVER_ID='" + serverId +"' AND DEL_FG='N'");
 
 		if(serverConnect == null){
-			return SystemMessageType.FAIL +" server null" ;
+			return Messages.FAIL +" server null" ;
 		}
 		return ApiRequests.sendToReceiveMessage(serverConnect.hostAddress, serverConnect.port, packageName, code, message);
 	}

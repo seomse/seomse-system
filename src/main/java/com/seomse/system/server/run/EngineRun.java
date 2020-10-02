@@ -16,17 +16,8 @@
 package com.seomse.system.server.run;
 
 /**
- * <pre>
- *  파 일 명 : EngineRun.java
- *  설    명 : 엔진 실행
- *
- *  작 성 자 : macle
- *  작 성 일 : 2019.10.25
- *  버    전 : 1.0
- *  수정이력 :
- *  기타사항 :
- * </pre>
- * @author Copyrights 2019 by ㈜섬세한사람들. All right reserved.
+ * 엔진 실행
+ * @author macle
  */
 public interface EngineRun {
 
@@ -36,8 +27,8 @@ public interface EngineRun {
 
 	/**
 	 * 엔진 시작
-	 * @param engineId 엔진 ID
-	 * @return message
+	 * @param engineId String 엔진 ID
+	 * @return String message
 	 */
 	String start(String engineId);
 	

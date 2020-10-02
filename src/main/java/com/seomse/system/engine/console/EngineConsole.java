@@ -16,10 +16,10 @@
 package com.seomse.system.engine.console;
 
 import com.seomse.api.ApiRequests;
+import com.seomse.api.Messages;
 import com.seomse.api.communication.HostAddrPort;
 import com.seomse.jdbc.JdbcQuery;
 import com.seomse.system.commons.PingApi;
-import com.seomse.system.commons.SystemMessageType;
 import com.seomse.system.server.console.ServerConsole;
 
 import java.util.Map;
@@ -138,7 +138,7 @@ public final class EngineConsole {
 		HostAddrPort hostAddrPort = getHostAddrPort(engineId);
 
 		if(hostAddrPort == null){
-			return SystemMessageType.FAIL +" engine null" ;
+			return Messages.FAIL +" engine null" ;
 		}
 		return ApiRequests.sendToReceiveMessage(hostAddrPort.getHostAddress(), hostAddrPort.getPort(), packageName, code, message);
 	}

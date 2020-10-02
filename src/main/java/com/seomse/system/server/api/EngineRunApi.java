@@ -16,8 +16,8 @@
 package com.seomse.system.server.api;
 
 import com.seomse.api.ApiMessage;
+import com.seomse.api.Messages;
 import com.seomse.commons.utils.ExceptionUtil;
-import com.seomse.system.commons.SystemMessageType;
 import com.seomse.system.server.Server;
 import com.seomse.system.server.run.EngineRun;
 import com.seomse.system.server.run.EngineRunFactory;
@@ -38,12 +38,12 @@ public class EngineRunApi extends ApiMessage {
 		try{
 			Server server = Server.getInstance();
 			EngineRun engineRun = EngineRunFactory.newEngineRun(server.getOsType());
-			sendMessage(SystemMessageType.SUCCESS + engineRun.start(message));
+			sendMessage(Messages.SUCCESS + engineRun.start(message));
 		}catch(Exception e){
 			logger.error(ExceptionUtil.getStackTrace(e));
-			sendMessage(SystemMessageType.FAIL + ExceptionUtil.getStackTrace(e));
+			sendMessage(Messages.FAIL + ExceptionUtil.getStackTrace(e));
 		}
-		
+
 	}
 
 }

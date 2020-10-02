@@ -8,11 +8,9 @@
 
 이러한 방식에서의 in memory 병렬처리 엔진 구현이 가능 하며 엔진간의 통신, 방대한 데이터 전송을 지원하며 여러 노드를 활용하여 처리하는 구현을 할떄 적합합니다.
 
-DB는 oracle 용으로 개발 되어 있고 maria는 지원 에정입니다.
-
-maria 에서도 잘 동작 할거라고 생각 되지만 테스트가 충분 하지 못했습니다.
-
-seomse-jdbc 활용
+DB는 oracle 용으로 초기 개발되었고 maria db 까지 지원합니다
+- 사용중 문제가 발생하면 아래 커뮤니티를 활용하여 연락주세요.
+- 시스템 트레이딩 제작에 사용하는 중요 라이브버리 입니다.
 
 # 구성
 ### common 
@@ -30,10 +28,10 @@ seomse-jdbc 활용
 - seomse-sync를 활용한 in memory 메타 관리기능 지원
 
 # gradle
-implementation 'com.seomse.system:seomse-system:0.9.0'
+implementation 'com.seomse.system:seomse-system:0.9.1'
 
 # etc
-https://mvnrepository.com/artifact/com.seomse.system/seomse-system/0.9.0
+https://mvnrepository.com/artifact/com.seomse.system/seomse-system/0.9.1
 
 # communication
 ### blog, homepage

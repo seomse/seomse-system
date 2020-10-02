@@ -22,6 +22,7 @@ build/
 .vagrant/
 /logs/
 /log/
+/config/
 
 # osx stuff
 .DS_Store

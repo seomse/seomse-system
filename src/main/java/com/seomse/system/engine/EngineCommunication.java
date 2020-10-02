@@ -16,9 +16,9 @@
 package com.seomse.system.engine;
 
 import com.seomse.api.ApiRequest;
+import com.seomse.api.Messages;
 import com.seomse.api.communication.HostAddrPort;
 import com.seomse.api.communication.StringPush;
-import com.seomse.system.commons.SystemMessageType;
 import com.seomse.system.engine.console.EngineConsole;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -90,7 +90,7 @@ public class EngineCommunication {
 		boolean isResult = true;
 		for(String message: messageArray){
 			String result = request.sendToReceiveMessage(packageName, message);
-			if(!result.startsWith(SystemMessageType.SUCCESS)){
+			if(!result.startsWith(Messages.SUCCESS)){
 				logger.error(result);
 				isResult = false;
 			}

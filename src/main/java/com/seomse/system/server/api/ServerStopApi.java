@@ -16,8 +16,8 @@
 package com.seomse.system.server.api;
 
 import com.seomse.api.ApiMessage;
+import com.seomse.api.Messages;
 import com.seomse.commons.utils.ExceptionUtil;
-import com.seomse.system.commons.SystemMessageType;
 import com.seomse.system.server.Server;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,11 +36,11 @@ public class ServerStopApi extends ApiMessage {
 			Server server = Server.getInstance();
 			server.updateEndTime();
 
-			sendMessage(SystemMessageType.SUCCESS);
+			sendMessage(Messages.SUCCESS);
 			System.exit(-1);
 		}catch(Exception e){
 			logger.error(ExceptionUtil.getStackTrace(e));
-			sendMessage(SystemMessageType.FAIL + ExceptionUtil.getStackTrace(e));
+			sendMessage(Messages.FAIL + ExceptionUtil.getStackTrace(e));
 		}
 	}
 

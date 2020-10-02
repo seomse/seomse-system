@@ -23,6 +23,10 @@ public class NotSupportOsTypeException extends RuntimeException{
 
 	private static final long serialVersionUID = -7937577737311154941L;
 
+	/**
+	 * 생성자
+	 * @param oyType String
+	 */
 	public NotSupportOsTypeException(String oyType){
 		super("not support os type: " + oyType);
 	}

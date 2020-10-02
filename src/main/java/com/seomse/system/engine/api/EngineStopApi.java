@@ -16,8 +16,8 @@
 package com.seomse.system.engine.api;
 
 import com.seomse.api.ApiMessage;
+import com.seomse.api.Messages;
 import com.seomse.commons.utils.ExceptionUtil;
-import com.seomse.system.commons.SystemMessageType;
 import com.seomse.system.engine.Engine;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,11 +36,11 @@ public class EngineStopApi extends ApiMessage {
 			Engine engine = Engine.getInstance();
 			engine.updateEndTime();
 
-			sendMessage(SystemMessageType.SUCCESS);
+			sendMessage(Messages.SUCCESS);
 			System.exit(0);
 		}catch(Exception e){
 			logger.error(ExceptionUtil.getStackTrace(e));
-			sendMessage(SystemMessageType.FAIL + ExceptionUtil.getStackTrace(e));
+			sendMessage(Messages.FAIL + ExceptionUtil.getStackTrace(e));
 		}
 	}
 

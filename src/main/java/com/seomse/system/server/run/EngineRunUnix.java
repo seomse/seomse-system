@@ -15,10 +15,10 @@
  */
 package com.seomse.system.server.run;
 
+import com.seomse.api.Messages;
 import com.seomse.commons.utils.ExceptionUtil;
 import com.seomse.jdbc.JdbcQuery;
 import com.seomse.jdbc.naming.JdbcNaming;
-import com.seomse.system.commons.SystemMessageType;
 import com.seomse.system.server.Server;
 import com.seomse.system.server.dno.EngineRunDno;
 import org.slf4j.Logger;
@@ -54,7 +54,7 @@ public class EngineRunUnix implements EngineRun{
 		final EngineRunDno engineRunDno = JdbcNaming.getObj(EngineRunDno.class , "ENGINE_ID ='" + engineId +"' AND DEL_FG='N' AND SERVER_ID='"
 		+ server.getServerId() + "'" );
 		if(engineRunDno == null){
-			return SystemMessageType.FAIL + " ENGINE_ID Check: " + engineId;
+			return Messages.FAIL + " ENGINE_ID Check: " + engineId;
 		}
 
 
@@ -103,6 +103,7 @@ public class EngineRunUnix implements EngineRun{
 			}
 
 			while (!isMessageComplete) {
+				//noinspection BusyWait
 				Thread.sleep(200);
 			}
 			
@@ -110,14 +111,14 @@ public class EngineRunUnix implements EngineRun{
 
 			messageBuilder.setLength(0);
 			if(message.contains("engine start")){
-				return SystemMessageType.SUCCESS;
+				return Messages.SUCCESS;
 			}else{
-				return SystemMessageType.FAIL + " "+ message;
+				return Messages.FAIL + " "+ message;
 			}
 			
 		}catch(Exception e){
 			logger.error(ExceptionUtil.getStackTrace(e));
-			return SystemMessageType.FAIL + "\n" + ExceptionUtil.getStackTrace(e);
+			return Messages.FAIL + "\n" + ExceptionUtil.getStackTrace(e);
 		}
 	}
 

@@ -17,6 +17,7 @@ package com.seomse.system.commons;
 
 import com.seomse.api.ApiMessage;
 import com.seomse.api.ApiRequest;
+import com.seomse.api.Messages;
 import com.seomse.commons.config.Config;
 
 /**
@@ -28,9 +29,9 @@ public class PingApi extends ApiMessage {
 	@Override
 	public void receive(String message) {
 		try{
-			sendMessage(SystemMessageType.SUCCESS);
+			sendMessage(Messages.SUCCESS);
 		}catch(Exception e){
-			sendMessage(SystemMessageType.FAIL);
+			sendMessage(Messages.FAIL);
 		}
 	}
 
@@ -50,7 +51,7 @@ public class PingApi extends ApiMessage {
 		request.connect();
 		String result = request.sendToReceiveMessage("PingApi", "");
 		request.disConnect();
-		return result.startsWith(SystemMessageType.SUCCESS);
+		return result.startsWith(Messages.SUCCESS);
 	}
 	
 }
