@@ -28,10 +28,10 @@ DB는 oracle 용으로 초기 개발되었고 maria db 까지 지원합니다
 - seomse-sync를 활용한 in memory 메타 관리기능 지원
 
 # gradle
-implementation 'com.seomse.system:seomse-system:0.9.1'
+implementation 'com.seomse.system:seomse-system:0.9.2'
 
 # etc
-https://mvnrepository.com/artifact/com.seomse.system/seomse-system/0.9.1
+https://mvnrepository.com/artifact/com.seomse.system/seomse-system/0.9.2
 
 # communication
 ### blog, homepage

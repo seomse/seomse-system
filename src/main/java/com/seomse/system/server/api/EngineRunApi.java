@@ -38,7 +38,7 @@ public class EngineRunApi extends ApiMessage {
 		try{
 			Server server = Server.getInstance();
 			EngineRun engineRun = EngineRunFactory.newEngineRun(server.getOsType());
-			sendMessage(Messages.SUCCESS + engineRun.start(message));
+			sendMessage(engineRun.start(message));
 		}catch(Exception e){
 			logger.error(ExceptionUtil.getStackTrace(e));
 			sendMessage(Messages.FAIL + ExceptionUtil.getStackTrace(e));
