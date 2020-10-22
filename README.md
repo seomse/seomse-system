@@ -27,11 +27,14 @@ DB는 oracle 용으로 초기 개발되었고 maria db 까지 지원합니다
 - 서버 프로세스가 구동될떄 시작되는 서비스 지원
 - seomse-sync를 활용한 in memory 메타 관리기능 지원
 
+# 용어사전
+https://docs.google.com/spreadsheets/d/1pdGiP8jEBiIJJs4pU9r71oRbNLpdad1SdFWu5ULs8N0/edit#gid=300093160
+
 # gradle
-implementation 'com.seomse.system:seomse-system:0.9.2'
+implementation 'com.seomse.system:seomse-system:0.9.3'
 
 # etc
-https://mvnrepository.com/artifact/com.seomse.system/seomse-system/0.9.2
+https://mvnrepository.com/artifact/com.seomse.system/seomse-system/0.9.3
 
 # communication
 ### blog, homepage
