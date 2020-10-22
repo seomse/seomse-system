@@ -97,7 +97,7 @@ public final class EngineConsole {
 	 * @return HostAddrPort host adder and port
 	 */
 	public static HostAddrPort getHostAddrPort(String engineId){
-		String sql = "SELECT S.HOST_ADDR AS HOST_ADDR, E.API_PORT_NB AS PORT_NB FROM T_SYSTEM_SERVER S, T_SYSTEM_ENGINE E\n" +
+		String sql = "SELECT S.HOST_ADDR AS HOST_ADDR, E.API_PORT_NO AS PORT_NB FROM T_SYSTEM_SERVER S, T_SYSTEM_ENGINE E\n" +
 				" WHERE S.SERVER_ID = E.SERVER_ID\n" +
 				" AND S.DEL_FG='N' AND E.DEL_FG='N'\n" +
 				" AND E.ENGINE_ID ='" + engineId + "'";

@@ -25,7 +25,7 @@ import com.seomse.jdbc.annotation.Table;
 public class EngineStartDno {
 
     private String SERVER_ID;
-    private Integer API_PORT_NB;
+    private Integer API_PORT_NO;
 
     /**
      * sever id get
@@ -39,8 +39,8 @@ public class EngineStartDno {
      * port number get
      * @return Integer port number
      */
-    public Integer getAPI_PORT_NB() {
-        return API_PORT_NB;
+    public Integer getAPI_PORT_NO() {
+        return API_PORT_NO;
     }
 
 

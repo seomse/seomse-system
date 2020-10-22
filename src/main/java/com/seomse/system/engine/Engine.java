@@ -137,7 +137,7 @@ public class Engine {
 				}
 			}
 
-			ApiServer apiServer = new ApiServer(engineStartDno.getAPI_PORT_NB(), Config.getConfig("engine.api.package","com.seomse.system.engine.api"));
+			ApiServer apiServer = new ApiServer(engineStartDno.getAPI_PORT_NO(), Config.getConfig("engine.api.package","com.seomse.system.engine.api"));
 			if(inetAddress != null)
 				apiServer.setInetAddress(inetAddress);
 			apiServer.start();

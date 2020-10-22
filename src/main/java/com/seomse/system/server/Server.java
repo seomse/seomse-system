@@ -108,7 +108,7 @@ public class Server {
 					inetAddress = NetworkUtil.getInetAddress(serverDno.getHOST_ADDR());
 				}
 			}
-			ApiServer apiServer = new ApiServer(serverDno.getAPI_PORT_NB(), "com.seomse.system.server.api");
+			ApiServer apiServer = new ApiServer(serverDno.getAPI_PORT_NO(), "com.seomse.system.server.api");
 			if(inetAddress != null)
 				apiServer.setInetAddress(inetAddress);
 			apiServer.start();

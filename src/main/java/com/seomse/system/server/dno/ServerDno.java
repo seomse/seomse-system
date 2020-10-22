@@ -30,7 +30,7 @@ public class ServerDno {
     private String SERVER_ID;
     private String SERVER_NM;
     private String HOST_ADDR;
-    private Integer API_PORT_NB;
+    private Integer API_PORT_NO;
     @SuppressWarnings("FieldMayBeFinal")
     private String OS_TP = "UNIX" ;
 
@@ -62,8 +62,8 @@ public class ServerDno {
      *
      * @return Integer port number
      */
-    public Integer getAPI_PORT_NB() {
-        return API_PORT_NB;
+    public Integer getAPI_PORT_NO() {
+        return API_PORT_NO;
     }
 
     /**

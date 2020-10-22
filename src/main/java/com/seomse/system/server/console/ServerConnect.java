@@ -26,6 +26,6 @@ import com.seomse.jdbc.annotation.Table;
 public class ServerConnect {
     @Column(name = "HOST_ADDR")
     String hostAddress;
-    @Column(name = "API_PORT_NB")
+    @Column(name = "API_PORT_NO")
     int port;
 }

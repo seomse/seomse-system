@@ -23,7 +23,7 @@ import com.seomse.jdbc.annotation.Table;
  */
 @Table(name="T_SYSTEM_ENGINE")
 public class EngineRunDno {
-    private Integer API_PORT_NB;
+    private Integer API_PORT_NO;
     private Integer MIN_MEMORY_MB;
     private Integer MAX_MEMORY_MB;
     private String EXE_FILE_PATH;
@@ -31,8 +31,8 @@ public class EngineRunDno {
     /**
      * @return Integer api port number
      */
-    public Integer getAPI_PORT_NB() {
-        return API_PORT_NB;
+    public Integer getAPI_PORT_NO() {
+        return API_PORT_NO;
     }
 
     /**
