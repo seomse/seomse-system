@@ -31,10 +31,10 @@ DB는 oracle 용으로 초기 개발되었고 maria db 까지 지원합니다
 https://docs.google.com/spreadsheets/d/1pdGiP8jEBiIJJs4pU9r71oRbNLpdad1SdFWu5ULs8N0/edit#gid=300093160
 
 # gradle
-implementation 'com.seomse.system:seomse-system:0.9.3'
+implementation 'com.seomse.system:seomse-system:0.9.4'
 
 # etc
-https://mvnrepository.com/artifact/com.seomse.system/seomse-system/0.9.3
+https://mvnrepository.com/artifact/com.seomse.system/seomse-system/0.9.4
 
 # communication
 ### blog, homepage

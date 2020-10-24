@@ -129,7 +129,7 @@ public class Server {
 					String initializerPackage = getConfig("server.initializer.package");
 
 					if(initializerPackage == null){
-						initializerPackage = "com.seomse";
+						initializerPackage = Config.getConfig("default.package", "com.seomse");
 					}
 					String [] initPackages = initializerPackage.split(",");
 

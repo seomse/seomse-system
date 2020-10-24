@@ -150,7 +150,11 @@ public class Engine {
 				public void run(){
 					try{
 
-						String initializerPackage = Config.getConfig("engine.initializer.package", "com.seomse");
+						String initializerPackage = Config.getConfig("engine.initializer.package");
+
+						if(initializerPackage == null){
+							initializerPackage = Config.getConfig("default.package", "com.seomse");
+						}
 
 						String [] initPackages = initializerPackage.split(",");
 
