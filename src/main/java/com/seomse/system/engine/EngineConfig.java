@@ -24,7 +24,7 @@ import com.seomse.jdbc.annotation.Table;
  * engine config
  * @author macle
  */
-@Table(name="T_SYSTEM_ENGINE_CONFIG", orderBy = "UPT_LAST_DT ASC")
+@Table(name="T_SYSTEM_ENGINE_CONFIG", orderBy = "UPT_DT ASC")
 public class EngineConfig {
     @Column(name = "CONFIG_KEY")
     String key;
@@ -34,7 +34,7 @@ public class EngineConfig {
     @Column(name = "DEL_FG")
     boolean isDelete;
     @DateTime
-    @Column(name = "UPT_LAST_DT")
+    @Column(name = "UPT_DT")
     long updateTime;
 
 }

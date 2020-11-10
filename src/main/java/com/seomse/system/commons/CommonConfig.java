@@ -21,7 +21,7 @@ import com.seomse.jdbc.annotation.*;
  * 공통 코드 클레스
  * @author macle
  */
-@Table(name="T_COMMON_CONFIG", orderBy = "UPT_LAST_DT ASC")
+@Table(name="T_COMMON_CONFIG", orderBy = "UPT_DT ASC")
 public class CommonConfig {
     @PrimaryKey
     @Column(name = "CONFIG_KEY")
@@ -32,6 +32,6 @@ public class CommonConfig {
     @Column(name = "DEL_FG")
     boolean isDelete;
     @DateTime
-    @Column(name = "UPT_LAST_DT")
+    @Column(name = "UPT_DT")
     long updateTime;
 }
