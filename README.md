@@ -34,7 +34,7 @@ https://docs.google.com/spreadsheets/d/1pdGiP8jEBiIJJs4pU9r71oRbNLpdad1SdFWu5ULs
 implementation 'com.seomse.system:seomse-system:0.9.7'
 
 # etc
-https://mvnrepository.com/artifact/com.seomse.system/seomse-system/0.9.7'
+https://mvnrepository.com/artifact/com.seomse.system/seomse-system/0.9.7
 
 # communication
 ### blog, homepage
