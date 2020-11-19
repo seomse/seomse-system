@@ -38,8 +38,10 @@ https://mvnrepository.com/artifact/com.seomse.system/seomse-system/0.9.7
 
 # communication
 ### blog, homepage
-- seomse.tistory.com
 - www.seomse.com
+- github.com/seomse/
+- seomse.tistory.com
+- seomse.github.io
 - seomse.com
 
 ### 카카오톡 오픈톡
@@ -48,5 +50,9 @@ https://mvnrepository.com/artifact/com.seomse.system/seomse-system/0.9.7
 ### 슬랙 slack
 - https://seomse.slack.com/
 
-### email (협업, 외주)
+### email
  - comseomse@gmail.com
+ 
+ # dev
+ - macle
+    -  github.com/macle86/
