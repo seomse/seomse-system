@@ -38,10 +38,10 @@ https://mvnrepository.com/artifact/com.seomse.system/seomse-system/0.9.8
 
 # communication
 ### blog, homepage
-- www.seomse.com
-- github.com/seomse/
-- seomse.tistory.com
-- seomse.github.io
+- [www.seomse.com](https://www.seomse.com/)
+- [github.com/seomse](https://github.com/seomse)
+- [seomse.tistory.com](https://seomse.tistory.com/)
+- [seomse.github.io](https://seomse.github.io/)
 - seomse.com
 
 ### 카카오톡 오픈톡
