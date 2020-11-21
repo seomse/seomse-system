@@ -34,7 +34,7 @@ public class EngineStopApi extends ApiMessage {
 	public void receive(String message) {
 		try{
 			Engine engine = Engine.getInstance();
-			engine.updateEndTime();
+			engine.updateStopTime();
 
 			sendMessage(Messages.SUCCESS);
 			System.exit(0);

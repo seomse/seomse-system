@@ -219,18 +219,18 @@ public class Engine {
 		long dataTime = Database.getDateTime();
 
 		timeDno.setSTART_DT(dataTime);
-		timeDno.setEND_DT( null);
+		timeDno.setSTOP_DT( null);
 		JdbcNaming.update(timeDno, true);
 
 		logger.info("Engine start complete!");
 	}
 
 	/**
-	 * end time update
+	 * stio time update
 	 */
-	public void updateEndTime(){
+	public void updateStopTime(){
 		long time = Database.getDateTime();
-		timeDno.setEND_DT(time);
+		timeDno.setSTOP_DT(time);
 		JdbcNaming.update(timeDno, false);
 	}
 

@@ -21,7 +21,7 @@ import com.seomse.jdbc.annotation.Table;
 
 /**
  * server
- * start time, end time
+ * start time, stop time
  * @author macle
  */
 @Table(name="T_SYSTEM_SERVER")
@@ -32,10 +32,10 @@ public class ServerTimeDno {
     @DateTime
     private Long START_DT;
     @DateTime
-    private Long END_DT;
+    private Long STOP_DT;
 
     /**
-     *
+     * server id
      * @return String server id
      */
     public String getSERVER_ID() {
@@ -43,42 +43,47 @@ public class ServerTimeDno {
     }
 
     /**
-     *
-     * @param SERVER_ID String server id
+     * server id set
+     * @param SERVER_ID server id
      */
     public void setSERVER_ID(String SERVER_ID) {
         this.SERVER_ID = SERVER_ID;
     }
 
     /**
-     *
-     * @return Long start time
+     * start time
+     * (unix time)
+     * @return start time (unix time)
      */
     public Long getSTART_DT() {
         return START_DT;
     }
 
     /**
-     *
-     * @param START_DT Long start time
+     * start time set
+     * (unix time)
+     * @param START_DT start time (unix time)
      */
     public void setSTART_DT(Long START_DT) {
         this.START_DT = START_DT;
     }
 
+
     /**
-     *
-     * @return Long end time
+     * stop time
+     * (unix time)
+     * @return stop time (unix time)
      */
-    public Long getEND_DT() {
-        return END_DT;
+    public Long getSTOP_DT() {
+        return STOP_DT;
     }
 
     /**
-     *
-     * @param END_DT Long end time
+     * stop time set
+     * (unix time)
+     * @param STOP_DT stop time (unix time)
      */
-    public void setEND_DT(Long END_DT) {
-        this.END_DT = END_DT;
+    public void setSTOP_DT(Long STOP_DT) {
+        this.STOP_DT = STOP_DT;
     }
 }

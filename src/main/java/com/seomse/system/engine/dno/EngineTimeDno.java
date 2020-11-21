@@ -31,7 +31,7 @@ public class EngineTimeDno {
     @DateTime
     private Long START_DT;
     @DateTime
-    private Long END_DT;
+    private Long STOP_DT;
 
     /**
      * engine id get
@@ -51,7 +51,8 @@ public class EngineTimeDno {
 
     /**
      * start time get
-     * @return Long start time
+     * (unix time)
+     * @return start time (unix time)
      */
     public Long getSTART_DT() {
         return START_DT;
@@ -59,25 +60,28 @@ public class EngineTimeDno {
 
     /**
      * start time set
-     * @param START_DT Long start time
+     * (unix time)
+     * @param START_DT start time (unix time)
      */
     public void setSTART_DT(Long START_DT) {
         this.START_DT = START_DT;
     }
 
     /**
-     * end time get
-     * @return Long end time
+     * stop time
+     * (unix time)
+     * @return stop time (unix time)
      */
-    public Long getEND_DT() {
-        return END_DT;
+    public Long getSTOP_DT() {
+        return STOP_DT;
     }
 
     /**
-     * end time set
-     * @param END_DT Long end time
+     * stop time set
+     * (unix time)
+     * @param STOP_DT stop time ((unix time)
      */
-    public void setEND_DT(Long END_DT) {
-        this.END_DT = END_DT;
+    public void setSTOP_DT(Long STOP_DT) {
+        this.STOP_DT = STOP_DT;
     }
 }

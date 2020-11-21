@@ -192,7 +192,7 @@ public class Server {
 		timeDno = new ServerTimeDno();
 		timeDno.setSERVER_ID(serverId);
 		timeDno.setSTART_DT(dataTime);
-		timeDno.setEND_DT(null);
+		timeDno.setSTOP_DT(null);
 		JdbcNaming.update(timeDno, true);
 		logger.info("Server start complete!");
 	}
@@ -202,7 +202,7 @@ public class Server {
 	 */
 	public void updateEndTime(){
 		long dataTime = Database.getDateTime();
-		timeDno.setEND_DT(dataTime);
+		timeDno.setSTOP_DT(dataTime);
 		JdbcNaming.update(timeDno, false);
 	}
 
