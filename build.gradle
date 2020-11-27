@@ -3,7 +3,7 @@ plugins {
 }
 
 group 'com.seomse.system'
-version '0.9.8'
+version '0.9.9'
 
 repositories {
     mavenCentral()
@@ -12,10 +12,9 @@ repositories {
 dependencies {
 
     //seomse
-    implementation 'com.seomse.api:seomse-api:1.0.5'
-    implementation 'com.seomse.sync:seomse-sync:1.0.2'
-    implementation 'com.seomse.jdbc:seomse-jdbc:0.9.5'
-    implementation 'com.seomse.commons:seomse-commons:1.2.0'
+    implementation 'com.seomse.api:seomse-api:1.0.6'
+    implementation 'com.seomse.sync:seomse-sync:1.0.3'
+    implementation 'com.seomse.jdbc:seomse-jdbc:0.9.6'
 
     implementation group: 'org.moara.ftp', name: 'moara-ftp', version: '0.1.0'
     //maria db
