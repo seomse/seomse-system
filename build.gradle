@@ -3,7 +3,7 @@ plugins {
 }
 
 group 'com.seomse.system'
-version '0.9.9'
+version '1.0.0'
 
 repositories {
     mavenCentral()
@@ -12,7 +12,7 @@ repositories {
 dependencies {
 
     //seomse
-    implementation 'com.seomse.api:seomse-api:1.0.6'
+    implementation 'com.seomse.api:seomse-api:1.0.8'
     implementation 'com.seomse.sync:seomse-sync:1.0.3'
     implementation 'com.seomse.jdbc:seomse-jdbc:0.9.6'
 

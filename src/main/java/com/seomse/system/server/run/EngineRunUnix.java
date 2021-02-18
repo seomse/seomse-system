@@ -29,17 +29,10 @@ import java.io.InputStreamReader;
 import java.lang.ProcessBuilder.Redirect;
 import java.util.ArrayList;
 import java.util.List;
+
 /**
- * <pre>
- *  파 일 명 : EngineRunUnix.java
- *  설    명 : unix계열용 엔진실행
- *  작 성 자 : macle
- *  작 성 일 : 2019.10.25
- *  버    전 : 1.0
- *  수정이력 :
- *  기타사항 :
- * </pre>
- * @author Copyrights 2019 by ㈜섬세한사람들. All right reserved.
+ * unix계열용 엔진실행
+ * @author macle
  */
 public class EngineRunUnix implements EngineRun{
 	
