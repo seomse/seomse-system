@@ -45,6 +45,7 @@ implementation 'com.seomse.system:seomse-system:1.0.0'
 
 ### 카카오톡 오픈톡
  - https://open.kakao.com/o/g6vzOKqb
+   - 참여코드 : seomse
 
 ### 슬랙 slack
 - https://seomse.slack.com/
